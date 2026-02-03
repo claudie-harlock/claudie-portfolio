@@ -1,105 +1,21 @@
-import { useRef, useMemo } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Points, PointMaterial } from '@react-three/drei'
-import * as THREE from 'three'
-import { motion } from 'framer-motion'
-
-// Particle field component
-function ParticleField() {
-  const ref = useRef<THREE.Points>(null)
-  
-  const particles = useMemo(() => {
-    const count = 3000
-    const positions = new Float32Array(count * 3)
-    
-    for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 20
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 20
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 20
-    }
-    
-    return positions
-  }, [])
-
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.x = state.clock.elapsedTime * 0.02
-      ref.current.rotation.y = state.clock.elapsedTime * 0.03
-    }
-  })
-
-  return (
-    <Points ref={ref} positions={particles} stride={3} frustumCulled={false}>
-      <PointMaterial
-        transparent
-        color="#10b981"
-        size={0.02}
-        sizeAttenuation={true}
-        depthWrite={false}
-        opacity={0.6}
-      />
-    </Points>
-  )
-}
-
-// Floating orbs
-function FloatingOrbs() {
-  const mesh1 = useRef<THREE.Mesh>(null)
-  const mesh2 = useRef<THREE.Mesh>(null)
-  const mesh3 = useRef<THREE.Mesh>(null)
-
-  useFrame((state) => {
-    const t = state.clock.elapsedTime
-    if (mesh1.current) {
-      mesh1.current.position.y = Math.sin(t * 0.5) * 0.5 + 1
-      mesh1.current.position.x = Math.cos(t * 0.3) * 0.5 + 2
-    }
-    if (mesh2.current) {
-      mesh2.current.position.y = Math.sin(t * 0.4 + 1) * 0.5 - 1
-      mesh2.current.position.x = Math.cos(t * 0.35 + 1) * 0.5 - 2
-    }
-    if (mesh3.current) {
-      mesh3.current.position.y = Math.sin(t * 0.45 + 2) * 0.3
-      mesh3.current.position.x = Math.cos(t * 0.4 + 2) * 0.3 + 3
-    }
-  })
-
-  return (
-    <>
-      <mesh ref={mesh1} position={[2, 1, -3]}>
-        <sphereGeometry args={[0.5, 32, 32]} />
-        <meshBasicMaterial color="#10b981" transparent opacity={0.1} />
-      </mesh>
-      <mesh ref={mesh2} position={[-2, -1, -4]}>
-        <sphereGeometry args={[0.8, 32, 32]} />
-        <meshBasicMaterial color="#10b981" transparent opacity={0.08} />
-      </mesh>
-      <mesh ref={mesh3} position={[3, 0, -5]}>
-        <sphereGeometry args={[0.3, 32, 32]} />
-        <meshBasicMaterial color="#10b981" transparent opacity={0.15} />
-      </mesh>
-    </>
-  )
-}
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { useRef } from 'react'
+import { CreditCard, BarChart3, Shield, Zap, Globe, Bot } from 'lucide-react'
 
 function App() {
-  return (
-    <div className="min-h-screen bg-[#0a0a0c] text-white font-['Space_Grotesk',sans-serif] overflow-x-hidden">
-      {/* Three.js Background */}
-      <div className="fixed inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 5], fov: 60 }}>
-          <ambientLight intensity={0.5} />
-          <ParticleField />
-          <FloatingOrbs />
-        </Canvas>
-      </div>
+  const heroRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  })
+  
+  // Parallax effect - video moves slower than scroll
+  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"])
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.1])
+  const videoOpacity = useTransform(scrollYProgress, [0, 0.8, 1], [0.6, 0.3, 0])
 
-      {/* Gradient overlay */}
-      <div className="fixed inset-0 z-[1] pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0c] via-transparent to-[#0a0a0c]" />
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-emerald-500/10 rounded-full blur-[200px] -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[150px] translate-y-1/2 -translate-x-1/3" />
-      </div>
+  return (
+    <div className="min-h-screen bg-[#0a0a0c] text-white font-['Plus_Jakarta_Sans',sans-serif] overflow-x-hidden">
 
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#0a0a0c]/60 border-b border-white/5">
@@ -149,8 +65,30 @@ function App() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-40 pb-24 px-6 z-10">
-        <div className="max-w-4xl mx-auto">
+      <section ref={heroRef} className="relative min-h-screen pt-40 pb-24 px-6 z-10 overflow-hidden">
+        {/* Video Background - Hero only with parallax */}
+        <motion.div 
+          className="absolute inset-0 z-0"
+          style={{ y: videoY, scale: videoScale, opacity: videoOpacity }}
+        >
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src="/zenith-bg.mp4" type="video/mp4" />
+          </video>
+        </motion.div>
+
+        {/* Gradient overlay - Hero only */}
+        <div className="absolute inset-0 z-[1] pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0c] via-transparent to-[#0a0a0c]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-transparent to-transparent" />
+        </div>
+
+        <div className="max-w-4xl mx-auto relative z-10">
           {/* Badge */}
           <motion.div 
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm mb-10 backdrop-blur-sm"
@@ -221,13 +159,6 @@ function App() {
                 className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity"
               />
               <span className="relative z-10">Start for free</span>
-              <motion.div 
-                className="absolute inset-0 opacity-50"
-                animate={{ 
-                  boxShadow: ['0 0 20px rgba(16,185,129,0.3)', '0 0 40px rgba(16,185,129,0.6)', '0 0 20px rgba(16,185,129,0.3)']
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
             </motion.a>
             <motion.a 
               href="#" 
@@ -344,16 +275,16 @@ function App() {
 
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { icon: '💳', title: 'Global Payments', desc: '카드, 계좌이체, 간편결제. 전 세계 어디서든.' },
-              { icon: '📊', title: 'Analytics', desc: '실시간 판매 현황과 인사이트.' },
-              { icon: '🔒', title: 'Security', desc: 'PCI DSS 인증. 엔터프라이즈급 보안.' },
-              { icon: '⚡', title: 'Instant Payouts', desc: '판매 대금 즉시 정산.' },
-              { icon: '🌍', title: '195+ Countries', desc: '자동 환율 변환 및 현지화.' },
-              { icon: '🤖', title: 'AI Ready', desc: 'MCP 네이티브. AI 에이전트 연동.' }
+              { icon: CreditCard, title: 'Global Payments', desc: '카드, 계좌이체, 간편결제. 전 세계 어디서든.', color: 'from-emerald-400 to-cyan-400' },
+              { icon: BarChart3, title: 'Analytics', desc: '실시간 판매 현황과 인사이트.', color: 'from-cyan-400 to-blue-400' },
+              { icon: Shield, title: 'Security', desc: 'PCI DSS 인증. 엔터프라이즈급 보안.', color: 'from-blue-400 to-purple-400' },
+              { icon: Zap, title: 'Instant Payouts', desc: '판매 대금 즉시 정산.', color: 'from-purple-400 to-pink-400' },
+              { icon: Globe, title: '195+ Countries', desc: '자동 환율 변환 및 현지화.', color: 'from-pink-400 to-orange-400' },
+              { icon: Bot, title: 'AI Ready', desc: 'MCP 네이티브. AI 에이전트 연동.', color: 'from-orange-400 to-emerald-400' }
             ].map((feature, i) => (
               <motion.div
                 key={i}
-                className="group p-8 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm"
+                className="group p-8 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm hover:bg-white/[0.04] transition-colors"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -365,13 +296,17 @@ function App() {
                 }}
               >
                 <motion.div 
-                  className="text-4xl mb-4"
-                  whileHover={{ scale: 1.2, rotate: 10 }}
+                  className={`w-14 h-14 mb-5 rounded-2xl bg-gradient-to-br ${feature.color} p-[1px] relative`}
+                  whileHover={{ scale: 1.1 }}
                 >
-                  {feature.icon}
+                  <div className="w-full h-full rounded-2xl bg-[#0a0a0c] flex items-center justify-center">
+                    <feature.icon size={26} strokeWidth={1.5} className="text-white" />
+                  </div>
+                  {/* Glow effect */}
+                  <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${feature.color} opacity-20 blur-xl -z-10`} />
                 </motion.div>
                 <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-white/40">{feature.desc}</p>
+                <p className="text-white/50 leading-relaxed">{feature.desc}</p>
               </motion.div>
             ))}
           </div>
