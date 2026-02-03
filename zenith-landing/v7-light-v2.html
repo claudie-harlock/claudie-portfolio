@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith — Unlock seamless payments</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --blue-50: #eff6ff;
+            --blue-100: #dbeafe;
+            --blue-200: #bfdbfe;
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-900: #111827;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #fafbfd;
+            color: var(--gray-900);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: var(--blue-500);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            padding: 8px 16px;
+            font-size: 14px;
+            color: var(--gray-600);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover {
+            background: var(--gray-100);
+            color: var(--gray-900);
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .btn-signin {
+            padding: 10px 20px;
+            background: var(--blue-500);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .btn-login {
+            padding: 10px 20px;
+            background: white;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px 100px;
+            min-height: 85vh;
+        }
+        
+        /* Background watermark text */
+        .watermark {
+            position: absolute;
+            top: 0;
+            left: -5%;
+            font-size: clamp(100px, 15vw, 180px);
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.02);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+            letter-spacing: -0.03em;
+        }
+        
+        /* Wave gradient background */
+        .wave-bg {
+            position: absolute;
+            top: 0;
+            right: -10%;
+            width: 70%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .wave-bg svg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        /* Left cards stack */
+        .cards-stack {
+            position: relative;
+            height: 500px;
+            margin-top: 40px;
+        }
+        
+        .stack-card {
+            position: absolute;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Main dashboard card */
+        .card-main {
+            width: 380px;
+            padding: 24px;
+            top: 80px;
+            left: 0;
+            z-index: 3;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .card-header-title {
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+        
+        .card-header-subtitle {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            padding: 6px 12px;
+            background: var(--blue-50);
+            color: var(--blue-600);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .tag.outline {
+            background: transparent;
+            border: 1px solid var(--gray-200);
+            color: var(--gray-600);
+        }
+        
+        .card-body-title {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 24px;
+        }
+        
+        /* Chart */
+        .chart-container {
+            display: flex;
+            align-items: flex-end;
+            gap: 24px;
+        }
+        
+        .chart-circle {
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        
+        .chart-circle svg {
+            transform: rotate(-90deg);
+        }
+        
+        .chart-circle-bg {
+            fill: none;
+            stroke: var(--gray-100);
+            stroke-width: 8;
+        }
+        
+        .chart-circle-fill {
+            fill: none;
+            stroke: var(--blue-500);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 226;
+            stroke-dashoffset: 16;
+        }
+        
+        .chart-circle-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--blue-600);
+        }
+        
+        .chart-circle-label {
+            font-size: 10px;
+            color: var(--gray-500);
+            text-align: center;
+            margin-top: 4px;
+        }
+        
+        .chart-line {
+            flex: 1;
+            height: 60px;
+            position: relative;
+        }
+        
+        .chart-line svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .chart-line-path {
+            fill: none;
+            stroke: var(--blue-400);
+            stroke-width: 2;
+        }
+        
+        .chart-line-area {
+            fill: url(#lineGradient);
+        }
+        
+        .chart-stat {
+            text-align: right;
+        }
+        
+        .chart-stat-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .chart-stat-label {
+            font-size: 11px;
+            color: var(--gray-500);
+        }
+        
+        /* Smaller floating card */
+        .card-small {
+            width: 200px;
+            padding: 16px;
+            top: 20px;
+            left: 200px;
+            z-index: 2;
+        }
+        
+        .card-small .card-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--blue-100) 0%, var(--blue-200) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .card-small-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .card-small-value {
+            font-size: 11px;
+            color: var(--gray-500);
+        }
+        
+        /* Avatar floating card */
+        .card-avatar {
+            width: 180px;
+            padding: 14px;
+            bottom: 60px;
+            left: 240px;
+            z-index: 4;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .avatar-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .avatar-info {
+            flex: 1;
+        }
+        
+        .avatar-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .avatar-role {
+            font-size: 11px;
+            color: var(--gray-500);
+        }
+        
+        /* Right side - Hero text */
+        .hero-text {
+            padding-top: 60px;
+            padding-left: 40px;
+        }
+        
+        .hero-title {
+            font-size: clamp(32px, 4vw, 44px);
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            color: var(--gray-900);
+        }
+        
+        .hero-desc {
+            font-size: 15px;
+            color: var(--gray-500);
+            line-height: 1.7;
+            margin-bottom: 28px;
+            max-width: 400px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn-primary {
+            padding: 14px 28px;
+            background: var(--blue-500);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background: var(--blue-600);
+        }
+        
+        .btn-secondary {
+            padding: 14px 28px;
+            background: white;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--gray-300);
+            background: var(--gray-50);
+        }
+        
+        /* Stats card */
+        .stats-card {
+            position: absolute;
+            right: 0;
+            top: 280px;
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #818cf8 100%);
+            color: white;
+            padding: 28px;
+            border-radius: 16px;
+            width: 220px;
+            z-index: 5;
+        }
+        
+        .stats-card-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+        
+        .stats-card-title {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        
+        .stats-card-value {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .stats-card-value span {
+            font-size: 20px;
+            opacity: 0.7;
+        }
+        
+        .stats-card-socials {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        
+        .social-icon {
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        /* Why choose us section */
+        .section-why {
+            background: white;
+            padding: 80px 24px;
+        }
+        
+        .section-header {
+            max-width: 1200px;
+            margin: 0 auto 48px;
+            text-align: center;
+        }
+        
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: var(--blue-50);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--blue-600);
+            margin-bottom: 16px;
+        }
+        
+        .section-title {
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        
+        .feature-card {
+            background: var(--gray-50);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+        }
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        
+        .feature-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .feature-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            line-height: 1.6;
+        }
+        
+        /* Footer */
+        .footer {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-400);
+        }
+        
+        .footer span {
+            color: var(--blue-500);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .cards-stack {
+                display: none;
+            }
+            
+            .hero-text {
+                padding: 0;
+                text-align: center;
+            }
+            
+            .hero-desc {
+                margin: 0 auto 28px;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .stats-card {
+                display: none;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="logo">
+            <div class="logo-icon">△</div>
+            Zenith
+        </div>
+        <div class="nav-links">
+            <a href="#" class="nav-link">Personal</a>
+            <a href="#" class="nav-link">Company</a>
+            <a href="#" class="nav-link">Business</a>
+            <a href="#" class="nav-link">Pricing</a>
+            <a href="#" class="nav-link">Blog</a>
+        </div>
+        <div class="nav-right">
+            <button class="btn-signin">Sign up</button>
+            <button class="btn-login">Log in</button>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="watermark">Financial</div>
+        
+        <!-- Wave gradient background -->
+        <div class="wave-bg">
+            <svg viewBox="0 0 800 600" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e0e7ff;stop-opacity:0.8" />
+                        <stop offset="50%" style="stop-color:#c7d2fe;stop-opacity:0.6" />
+                        <stop offset="100%" style="stop-color:#ddd6fe;stop-opacity:0.4" />
+                    </linearGradient>
+                </defs>
+                <path d="M400,0 Q600,150 500,300 T600,600 L800,600 L800,0 Z" fill="url(#waveGrad)" />
+            </svg>
+        </div>
+        
+        <div class="hero-content">
+            <!-- Left: Card Stack -->
+            <div class="cards-stack">
+                <!-- Small card top -->
+                <div class="stack-card card-small">
+                    <div class="card-icon">📊</div>
+                    <div class="card-small-title">Custom Financial Reports</div>
+                    <div class="card-small-value">Real-time analytics</div>
+                </div>
+                
+                <!-- Main dashboard card -->
+                <div class="stack-card card-main">
+                    <div class="card-header">
+                        <div class="card-header-left">
+                            <span class="card-header-title">Start Your Business</span>
+                            <span class="card-header-subtitle">With New App</span>
+                        </div>
+                        <div class="tags">
+                            <span class="tag">Efficiency</span>
+                            <span class="tag outline">Reliability</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body-title">
+                        Start Managing Your Finances with Our New Tool
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-circle">
+                            <svg width="80" height="80">
+                                <circle class="chart-circle-bg" cx="40" cy="40" r="36" />
+                                <circle class="chart-circle-fill" cx="40" cy="40" r="36" />
+                            </svg>
+                            <div class="chart-circle-text">93%</div>
+                        </div>
+                        <div class="chart-line">
+                            <svg viewBox="0 0 200 60">
+                                <defs>
+                                    <linearGradient id="lineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:0.3" />
+                                        <stop offset="100%" style="stop-color:#60a5fa;stop-opacity:0" />
+                                    </linearGradient>
+                                </defs>
+                                <path class="chart-line-area" d="M0,50 Q30,45 50,40 T100,25 T150,30 T200,15 L200,60 L0,60 Z" />
+                                <path class="chart-line-path" d="M0,50 Q30,45 50,40 T100,25 T150,30 T200,15" />
+                            </svg>
+                        </div>
+                        <div class="chart-stat">
+                            <div class="chart-stat-value">₩25.9M</div>
+                            <div class="chart-stat-label">December</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Avatar card -->
+                <div class="stack-card card-avatar">
+                    <div class="avatar-img">EH</div>
+                    <div class="avatar-info">
+                        <div class="avatar-name">Emily Harris</div>
+                        <div class="avatar-role">30 Members</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right: Hero Text -->
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    Unlock a world of seamless payments
+                </h1>
+                <p class="hero-desc">
+                    Go Cashless And Experience The Future Of Payments. Simplify Transactions, Enjoy Security, And Embrace Convenience Like Never Before.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn-primary">Join Now</button>
+                    <button class="btn-secondary">Create Account</button>
+                </div>
+                
+                <!-- Stats card -->
+                <div class="stats-card">
+                    <div class="stats-card-label">AI-Driven Financial</div>
+                    <div class="stats-card-title">Analysis Speed For Your Investments</div>
+                    <div class="stats-card-value">8.9<span>ml</span></div>
+                    <div class="stats-card-socials">
+                        <div class="social-icon">𝕏</div>
+                        <div class="social-icon">in</div>
+                        <div class="social-icon">○</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Why Choose Us -->
+    <section class="section-why">
+        <div class="section-header">
+            <div class="section-badge">⚡ Bank On The Go</div>
+            <h2 class="section-title">Why customers choose us</h2>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <div class="feature-title">Global Reach</div>
+                <div class="feature-desc">Accept payments from 195+ countries with local payment methods and currencies.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">Instant Setup</div>
+                <div class="feature-desc">From signup to first payment in under 5 minutes. No business registration required.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-title">Bank-Grade Security</div>
+                <div class="feature-desc">Enterprise-level encryption with full compliance and fraud protection.</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        © 2026 Zenith. Built with <span>💙</span> by Claudie • QClay Slay Style
+    </footer>
+</body>
+</html>

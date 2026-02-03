@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith - Border Glow Card Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #080810;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: white;
+        }
+        
+        /* Stars Background */
+        .stars {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+        }
+        
+        /* Ambient Glow */
+        .ambient {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(150px);
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .ambient-1 {
+            background: #4f46e5;
+            top: -200px;
+            left: -200px;
+        }
+        
+        .ambient-2 {
+            background: #7c3aed;
+            bottom: -200px;
+            right: -200px;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 40px;
+            padding: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 100px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.5);
+            background: transparent;
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .tab:hover:not(.active) {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Cards Container */
+        .cards-container {
+            display: flex;
+            gap: 24px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Glow Card */
+        .glow-card {
+            position: relative;
+            width: 320px;
+            padding: 40px;
+            background: rgba(15, 15, 25, 0.8);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        /* Animated Border */
+        .glow-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            padding: 1px;
+            background: linear-gradient(
+                var(--angle, 0deg),
+                transparent 40%,
+                rgba(139, 92, 246, 0.8) 50%,
+                rgba(59, 130, 246, 0.8) 55%,
+                transparent 60%
+            );
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        
+        /* Mouse Glow Effect */
+        .glow-card::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 60%);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            transform: translate(-50%, -50%);
+            left: var(--mouse-x, 50%);
+            top: var(--mouse-y, 50%);
+        }
+        
+        .glow-card:hover::after {
+            opacity: 1;
+        }
+        
+        /* Card Content */
+        .card-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 16px;
+        }
+        
+        .card-price {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+        
+        .price-currency {
+            font-size: 24px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .price-amount {
+            font-size: 48px;
+            font-weight: 700;
+        }
+        
+        .price-period {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .card-desc {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 24px;
+        }
+        
+        .card-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card-btn:hover::before {
+            opacity: 1;
+        }
+        
+        .card-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+        
+        /* Features List */
+        .features-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 24px 0;
+        }
+        
+        .features-title {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 16px;
+        }
+        
+        .feature-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 13px;
+        }
+        
+        .feature-label {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .feature-value {
+            color: white;
+            font-weight: 500;
+        }
+        
+        .view-more {
+            margin-top: 16px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .view-more:hover {
+            color: white;
+        }
+        
+        /* Expert Card Highlight */
+        .glow-card.expert::before {
+            background: linear-gradient(
+                var(--angle, 0deg),
+                transparent 30%,
+                rgba(59, 130, 246, 0.9) 45%,
+                rgba(139, 92, 246, 0.9) 55%,
+                transparent 70%
+            );
+        }
+        
+        .glow-card.expert .card-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+        }
+        
+        /* Demo Label */
+        .demo-label {
+            position: fixed;
+            bottom: 30px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .demo-label span {
+            color: #8b5cf6;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="ambient ambient-1"></div>
+    <div class="ambient ambient-2"></div>
+    
+    <div class="tabs">
+        <button class="tab active">$50,000 account</button>
+        <button class="tab">$100,000 account</button>
+        <button class="tab">$150,000 account</button>
+    </div>
+    
+    <div class="cards-container">
+        <div class="glow-card" id="card1">
+            <div class="card-label">Starter</div>
+            <div class="card-price">
+                <span class="price-currency">$</span>
+                <span class="price-amount">300</span>
+                <span class="price-period">/ month</span>
+            </div>
+            <div class="card-desc">Simple and powerful</div>
+            <button class="card-btn">
+                Choose Starter Plan
+                <span>→</span>
+            </button>
+            
+            <div class="features-divider"></div>
+            
+            <div class="features-title">Get started today:</div>
+            <div class="feature-row">
+                <span class="feature-label">Profit Target</span>
+                <span class="feature-value">$6,000</span>
+            </div>
+            <div class="feature-row">
+                <span class="feature-label">Max Position</span>
+                <span class="feature-value">10 contracts</span>
+            </div>
+            <div class="feature-row">
+                <span class="feature-label">Daily Loss Limit</span>
+                <span class="feature-value">None</span>
+            </div>
+            <div class="feature-row">
+                <span class="feature-label">Trailing Max Drawdown</span>
+                <span class="feature-value">$3,000</span>
+            </div>
+            <div class="feature-row">
+                <span class="feature-label">Drawdown Mode</span>
+                <span class="feature-value">EOD ⓘ</span>
+            </div>
+            
+            <div class="view-more">View more <span>↓</span></div>
+        </div>
+        
+        <div class="glow-card expert" id="card2">
+            <div class="card-label">Expert</div>
+            <div class="card-price">
+                <span class="price-currency">$</span>
+                <span class="price-amount">375</span>
+                <span class="price-period">/ month</span>
+            </div>
+            <div class="card-desc">Simple and powerful</div>
+            <button class="card-btn">
+                Choose Expert Plan
+                <span>→</span>
+            </button>
+            
+            <div class="features-divider"></div>
+            
+            <div class="features-title">Get started today:</div>
+            <div class="feature-row">
+                <span class="feature-label">Profit Target</span>
+                <span class="feature-value">$6,000</span>
+            </div>
+            <div class="feature-row">
+                <span class="feature-label">Max Position</span>
+                <span class="feature-value">10 contracts</span>
+            </div>
+            <div class="feature-row">
+                <span class="feature-label">Daily Loss Limit</span>
+                <span class="feature-value">None</span>
+            </div>
+            <div class="feature-row">
+                <span class="feature-label">Trailing Max Drawdown</span>
+                <span class="feature-value">$3,000</span>
+            </div>
+            <div class="feature-row">
+                <span class="feature-label">Drawdown Mode</span>
+                <span class="feature-value">EOD ⓘ</span>
+            </div>
+            
+            <div class="view-more">View more <span>↓</span></div>
+        </div>
+    </div>
+    
+    <div class="demo-label">Border <span>Glow</span> Card Demo • FXIFY Style</div>
+    
+    <script>
+        // Create stars
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            star.style.width = (Math.random() * 2 + 1) + 'px';
+            star.style.height = star.style.width;
+            starsContainer.appendChild(star);
+        }
+        
+        // Card glow effect
+        const cards = document.querySelectorAll('.glow-card');
+        
+        cards.forEach(card => {
+            let angle = 0;
+            let animationId;
+            
+            card.addEventListener('mouseenter', () => {
+                // Start border animation
+                const animate = () => {
+                    angle += 2;
+                    card.style.setProperty('--angle', angle + 'deg');
+                    animationId = requestAnimationFrame(animate);
+                };
+                animate();
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                cancelAnimationFrame(animationId);
+            });
+            
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mouse-x', x + '%');
+                card.style.setProperty('--mouse-y', y + '%');
+            });
+        });
+        
+        // Tab switching
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

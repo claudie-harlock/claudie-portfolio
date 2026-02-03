@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith - 결제의 정점</title>
+    <meta name="description" content="한국 크리에이터를 위한 글로벌 결제 플랫폼. 사업자 없이 5분만에 시작하세요.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style-v2.css">
+</head>
+<body>
+    <!-- ASCII Background Pattern -->
+    <div class="ascii-pattern" aria-hidden="true">
+<pre>
+░▒▓█ ZENITH █▓▒░  ░▒▓█ ZENITH █▓▒░  ░▒▓█ ZENITH █▓▒░  ░▒▓█ ZENITH █▓▒░
+████████████████  ████████████████  ████████████████  ████████████████
+█ ACCEPT ░░░░░ █  █ PAYMENTS ░░ █  █ WITHOUT ░░░ █  █ LIMITS ░░░░ █
+████████████████  ████████████████  ████████████████  ████████████████
+░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+░░ 5% + ₩500 ░░░  ░░ NO LICENSE ░░  ░░ 195+ COUNTRIES  ░░ INSTANT ░░░░
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░
+    ▲▲▲▲▲▲▲▲          ▲▲▲▲▲▲▲▲          ▲▲▲▲▲▲▲▲          ▲▲▲▲▲▲▲▲    
+   ▲▲▲▲▲▲▲▲▲▲        ▲▲▲▲▲▲▲▲▲▲        ▲▲▲▲▲▲▲▲▲▲        ▲▲▲▲▲▲▲▲▲▲   
+  ▲▲▲ ZENITH ▲▲▲    ▲▲▲ ZENITH ▲▲▲    ▲▲▲ ZENITH ▲▲▲    ▲▲▲ ZENITH ▲▲▲  
+   ▲▲▲▲▲▲▲▲▲▲        ▲▲▲▲▲▲▲▲▲▲        ▲▲▲▲▲▲▲▲▲▲        ▲▲▲▲▲▲▲▲▲▲   
+    ▲▲▲▲▲▲▲▲          ▲▲▲▲▲▲▲▲          ▲▲▲▲▲▲▲▲          ▲▲▲▲▲▲▲▲    
+░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+░░ GLOBAL ░░░░░░  ░░ TAX AUTO ░░░░  ░░ MCP NATIVE ░░  ░░ WEEKLY PAY ░░
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░
+████████████████  ████████████████  ████████████████  ████████████████
+░▒▓█ ZENITH █▓▒░  ░▒▓█ ZENITH █▓▒░  ░▒▓█ ZENITH █▓▒░  ░▒▓█ ZENITH █▓▒░
+████████████████  ████████████████  ████████████████  ████████████████
+█ ACCEPT ░░░░░ █  █ PAYMENTS ░░ █  █ WITHOUT ░░░ █  █ LIMITS ░░░░ █
+████████████████  ████████████████  ████████████████  ████████████████
+░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+░░ 5% + ₩500 ░░░  ░░ NO LICENSE ░░  ░░ 195+ COUNTRIES  ░░ INSTANT ░░░░
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░
+    ▲▲▲▲▲▲▲▲          ▲▲▲▲▲▲▲▲          ▲▲▲▲▲▲▲▲          ▲▲▲▲▲▲▲▲    
+   ▲▲▲▲▲▲▲▲▲▲        ▲▲▲▲▲▲▲▲▲▲        ▲▲▲▲▲▲▲▲▲▲        ▲▲▲▲▲▲▲▲▲▲   
+  ▲▲▲ ZENITH ▲▲▲    ▲▲▲ ZENITH ▲▲▲    ▲▲▲ ZENITH ▲▲▲    ▲▲▲ ZENITH ▲▲▲  
+   ▲▲▲▲▲▲▲▲▲▲        ▲▲▲▲▲▲▲▲▲▲        ▲▲▲▲▲▲▲▲▲▲        ▲▲▲▲▲▲▲▲▲▲   
+    ▲▲▲▲▲▲▲▲          ▲▲▲▲▲▲▲▲          ▲▲▲▲▲▲▲▲          ▲▲▲▲▲▲▲▲    
+░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+░░ GLOBAL ░░░░░░  ░░ TAX AUTO ░░░░  ░░ MCP NATIVE ░░  ░░ WEEKLY PAY ░░
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░
+████████████████  ████████████████  ████████████████  ████████████████
+</pre>
+    </div>
+
+    <!-- Cursor Glow -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+    
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <div class="logo-mark">
+                    <svg viewBox="0 0 40 40" fill="none">
+                        <path d="M20 4L36 36H4L20 4Z" fill="url(#logoGrad)"/>
+                        <defs>
+                            <linearGradient id="logoGrad" x1="4" y1="36" x2="36" y2="4">
+                                <stop stop-color="#00FF88"/>
+                                <stop offset="1" stop-color="#00D4FF"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span>Zenith</span>
+            </a>
+            <div class="nav-menu">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
+                <a href="#" class="nav-link">Docs</a>
+            </div>
+            <div class="nav-actions">
+                <a href="#" class="btn-text">Sign in</a>
+                <a href="#" class="btn-glow">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="mesh-gradient"></div>
+            <div class="noise-overlay"></div>
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+            </div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                <span>Now in Beta</span>
+            </div>
+            
+            <h1 class="hero-title">
+                <span class="line">Accept payments</span>
+                <span class="line highlight">without limits</span>
+            </h1>
+            
+            <p class="hero-desc">
+                사업자 등록 없이, 복잡한 설정 없이.<br>
+                크리에이터를 위한 올인원 결제 플랫폼.
+            </p>
+            
+            <div class="hero-cta">
+                <a href="#" class="btn-primary">
+                    <span>Start for free</span>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M5 10H15M15 10L10 5M15 10L10 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+                <a href="#" class="btn-outline">Watch demo</a>
+            </div>
+            
+            <div class="hero-metrics">
+                <div class="metric">
+                    <span class="metric-value" data-value="0">0</span>
+                    <span class="metric-unit">%</span>
+                    <span class="metric-label">Upfront cost</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value" data-value="5">5</span>
+                    <span class="metric-unit">min</span>
+                    <span class="metric-label">To get started</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value" data-value="195">195</span>
+                    <span class="metric-unit">+</span>
+                    <span class="metric-label">Countries</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="hero-visual">
+            <div class="card-stack">
+                <div class="payment-card card-1">
+                    <div class="card-header">
+                        <span class="card-icon">💳</span>
+                        <span class="card-status live">LIVE</span>
+                    </div>
+                    <div class="card-amount">₩2,450,000</div>
+                    <div class="card-label">This month</div>
+                    <div class="card-chart">
+                        <svg viewBox="0 0 200 60" preserveAspectRatio="none">
+                            <path class="chart-line" d="M0,50 Q20,45 40,35 T80,30 T120,20 T160,25 T200,10" fill="none" stroke="url(#chartGrad)" stroke-width="3"/>
+                            <defs>
+                                <linearGradient id="chartGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#00FF88"/>
+                                    <stop offset="100%" stop-color="#00D4FF"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="payment-card card-2">
+                    <div class="transaction-item">
+                        <div class="tx-icon">🎨</div>
+                        <div class="tx-info">
+                            <span class="tx-name">Design Template</span>
+                            <span class="tx-time">Just now</span>
+                        </div>
+                        <span class="tx-amount">+₩49,000</span>
+                    </div>
+                </div>
+                
+                <div class="payment-card card-3">
+                    <div class="transaction-item">
+                        <div class="tx-icon">📚</div>
+                        <div class="tx-info">
+                            <span class="tx-name">E-book Sale</span>
+                            <span class="tx-time">2 min ago</span>
+                        </div>
+                        <span class="tx-amount">+₩29,000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee -->
+    <section class="marquee-section">
+        <div class="marquee">
+            <div class="marquee-content">
+                <span>STRIPE</span>
+                <span>•</span>
+                <span>PAYPAL</span>
+                <span>•</span>
+                <span>APPLE PAY</span>
+                <span>•</span>
+                <span>GOOGLE PAY</span>
+                <span>•</span>
+                <span>VISA</span>
+                <span>•</span>
+                <span>MASTERCARD</span>
+                <span>•</span>
+                <span>AMEX</span>
+                <span>•</span>
+                <span>STRIPE</span>
+                <span>•</span>
+                <span>PAYPAL</span>
+                <span>•</span>
+                <span>APPLE PAY</span>
+                <span>•</span>
+                <span>GOOGLE PAY</span>
+                <span>•</span>
+                <span>VISA</span>
+                <span>•</span>
+                <span>MASTERCARD</span>
+                <span>•</span>
+                <span>AMEX</span>
+                <span>•</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-intro">
+                <span class="section-tag">Features</span>
+                <h2>결제의 모든 것,<br><span class="text-gradient">하나로.</span></h2>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card feature-large">
+                    <div class="feature-visual">
+                        <div class="globe-container">
+                            <div class="globe">
+                                <div class="globe-grid"></div>
+                            </div>
+                            <div class="globe-glow"></div>
+                        </div>
+                    </div>
+                    <div class="feature-content">
+                        <div class="feature-icon">🌍</div>
+                        <h3>Global Payments</h3>
+                        <p>195개국 이상에서 다양한 결제 수단을 지원합니다. 어디서든 판매하세요.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Setup</h3>
+                    <p>5분 만에 첫 결제 링크를 만들 수 있습니다. 코딩 불필요.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🏢</div>
+                    <h3>No Business License</h3>
+                    <p>Zenith가 MoR로서 모든 법적 요건을 처리합니다.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Tax Automation</h3>
+                    <p>부가세, 원천징수, 해외 세금까지 자동 계산 및 신고.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>MCP Native</h3>
+                    <p>AI 에이전트와 직접 연동. 자동화 워크플로우 구축.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works -->
+    <section class="how-section">
+        <div class="container">
+            <div class="section-intro center">
+                <span class="section-tag">How it works</span>
+                <h2>3 Steps to Start</h2>
+            </div>
+            
+            <div class="steps-row">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <h3>Create Account</h3>
+                    <p>이메일만으로 1분 만에 가입</p>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <h3>Add Products</h3>
+                    <p>디지털 상품, 구독, 서비스 등록</p>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <h3>Share & Earn</h3>
+                    <p>링크 공유하고 수익 창출</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing-section" id="pricing">
+        <div class="container">
+            <div class="section-intro center">
+                <span class="section-tag">Pricing</span>
+                <h2>Simple & Transparent</h2>
+                <p>월 고정비 없이, 팔 때만 수수료.</p>
+            </div>
+            
+            <div class="pricing-card">
+                <div class="pricing-glow"></div>
+                <div class="pricing-header">
+                    <span class="pricing-label">Transaction Fee</span>
+                    <div class="pricing-value">
+                        <span class="price-main">5%</span>
+                        <span class="price-sub">+ ₩500 per transaction</span>
+                    </div>
+                </div>
+                <ul class="pricing-list">
+                    <li><span class="check">✓</span> Unlimited products</li>
+                    <li><span class="check">✓</span> Global payments</li>
+                    <li><span class="check">✓</span> Auto tax handling</li>
+                    <li><span class="check">✓</span> Weekly payouts</li>
+                    <li><span class="check">✓</span> Analytics dashboard</li>
+                    <li><span class="check">✓</span> Priority support</li>
+                </ul>
+                <a href="#" class="btn-primary full">Get Started Free</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <div class="cta-bg">
+                    <div class="cta-orb cta-orb-1"></div>
+                    <div class="cta-orb cta-orb-2"></div>
+                </div>
+                <div class="cta-content">
+                    <h2>Ready to reach<br>the <span class="text-gradient">Zenith</span>?</h2>
+                    <p>지금 시작하고, 전 세계에 판매하세요.</p>
+                    <a href="#" class="btn-white">Start for free →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="nav-logo">
+                        <div class="logo-mark">
+                            <svg viewBox="0 0 40 40" fill="none">
+                                <path d="M20 4L36 36H4L20 4Z" fill="url(#logoGrad2)"/>
+                                <defs>
+                                    <linearGradient id="logoGrad2" x1="4" y1="36" x2="36" y2="4">
+                                        <stop stop-color="#00FF88"/>
+                                        <stop offset="1" stop-color="#00D4FF"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <span>Zenith</span>
+                    </a>
+                    <p>결제의 정점에서 만나요.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Product</h4>
+                        <a href="#">Features</a>
+                        <a href="#">Pricing</a>
+                        <a href="#">API</a>
+                        <a href="#">Integrations</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Company</h4>
+                        <a href="#">About</a>
+                        <a href="#">Blog</a>
+                        <a href="#">Careers</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Support</h4>
+                        <a href="#">Help Center</a>
+                        <a href="#">Contact</a>
+                        <a href="#">Status</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Zenith. All rights reserved.</span>
+                <div class="footer-legal">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script-v2.js"></script>
+</body>
+</html>

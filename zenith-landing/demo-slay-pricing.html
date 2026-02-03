@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slay — Pricing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --blue-50: #eff6ff;
+            --blue-100: #dbeafe;
+            --blue-200: #bfdbfe;
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-900: #111827;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: linear-gradient(180deg, #f0f4ff 0%, #e8efff 100%);
+            color: var(--gray-900);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Background curved lines */
+        .bg-lines {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .bg-line {
+            position: absolute;
+            width: 200%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.8);
+            transform-origin: center;
+        }
+        
+        .bg-line:nth-child(1) {
+            top: 10%;
+            left: -50%;
+            transform: rotate(-5deg);
+        }
+        
+        .bg-line:nth-child(2) {
+            top: 25%;
+            left: -50%;
+            transform: rotate(-3deg);
+        }
+        
+        .bg-line:nth-child(3) {
+            bottom: 30%;
+            left: -50%;
+            transform: rotate(4deg);
+        }
+        
+        .bg-line:nth-child(4) {
+            bottom: 15%;
+            left: -50%;
+            transform: rotate(6deg);
+        }
+        
+        /* Navigation */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        
+        .logo-icon {
+            font-size: 24px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            font-size: 14px;
+        }
+        
+        .nav-links a {
+            color: var(--gray-600);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .nav-links a svg {
+            width: 12px;
+            height: 12px;
+        }
+        
+        .nav-right {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .nav-text {
+            font-size: 14px;
+            color: var(--gray-500);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .btn-signup {
+            padding: 10px 20px;
+            background: var(--blue-500);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .btn-login {
+            padding: 10px 20px;
+            background: white;
+            color: var(--gray-600);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        /* Main Content */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px 100px;
+            text-align: center;
+            position: relative;
+            z-index: 5;
+        }
+        
+        /* Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: white;
+            border-radius: 100px;
+            font-size: 13px;
+            color: var(--gray-600);
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        
+        .badge-icon {
+            font-size: 14px;
+        }
+        
+        /* Title */
+        .title {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            margin-bottom: 16px;
+            color: var(--gray-900);
+        }
+        
+        .subtitle {
+            font-size: 15px;
+            color: var(--gray-500);
+            margin-bottom: 32px;
+        }
+        
+        /* Tab Switch */
+        .tab-switch {
+            display: inline-flex;
+            background: white;
+            border-radius: 100px;
+            padding: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            margin-bottom: 60px;
+        }
+        
+        .tab-btn {
+            padding: 10px 28px;
+            border: none;
+            background: transparent;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            background: var(--blue-500);
+            color: white;
+        }
+        
+        /* Pricing Cards Container */
+        .pricing-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            perspective: 1000px;
+        }
+        
+        /* Pricing Card */
+        .pricing-card {
+            width: 280px;
+            padding: 40px 32px;
+            border-radius: 24px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        /* Side cards - glassmorphism with gradient */
+        .pricing-card.side {
+            background: linear-gradient(180deg, 
+                rgba(255, 255, 255, 0.95) 0%, 
+                rgba(255, 255, 255, 0.85) 30%,
+                rgba(224, 231, 255, 0.7) 70%,
+                rgba(199, 210, 254, 0.6) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.06),
+                inset 0 -40px 60px rgba(99, 102, 241, 0.05);
+        }
+        
+        .pricing-card.side.left {
+            transform: rotateY(15deg) translateZ(-20px);
+        }
+        
+        .pricing-card.side.right {
+            transform: rotateY(-15deg) translateZ(-20px);
+        }
+        
+        .pricing-card.side:hover {
+            transform: rotateY(0deg) translateZ(0px) translateY(-8px);
+        }
+        
+        /* Center card - blue gradient */
+        .pricing-card.center {
+            background: linear-gradient(180deg, 
+                #8b9eff 0%, 
+                #7b8eef 20%,
+                #6b7edf 40%,
+                #5b6ecf 60%,
+                #4b5ebf 80%,
+                #3b4eaf 100%);
+            color: white;
+            box-shadow: 
+                0 30px 80px rgba(59, 91, 219, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -20px 40px rgba(30, 50, 150, 0.3);
+            transform: translateY(-20px) scale(1.05);
+            z-index: 2;
+        }
+        
+        .pricing-card.center:hover {
+            transform: translateY(-28px) scale(1.08);
+        }
+        
+        /* Popular badge */
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 6px 16px;
+            background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            white-space: nowrap;
+        }
+        
+        /* Price */
+        .price {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+        
+        .price-currency {
+            font-family: 'DM Serif Display', serif;
+            font-size: 20px;
+            font-weight: 400;
+            margin-top: 16px;
+        }
+        
+        .price-amount {
+            font-family: 'DM Serif Display', serif;
+            font-size: 72px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+        
+        .price-period {
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 28px;
+            margin-left: 4px;
+        }
+        
+        .pricing-card.side .price-amount {
+            color: var(--gray-900);
+        }
+        
+        .pricing-card.side .price-currency,
+        .pricing-card.side .price-period {
+            color: var(--gray-500);
+        }
+        
+        .pricing-card.center .price-currency,
+        .pricing-card.center .price-amount,
+        .pricing-card.center .price-period {
+            color: white;
+        }
+        
+        /* Plan name */
+        .plan-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .pricing-card.side .plan-name {
+            color: var(--gray-900);
+        }
+        
+        /* Plan description */
+        .plan-desc {
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+        
+        .pricing-card.side .plan-desc {
+            color: var(--gray-400);
+        }
+        
+        .pricing-card.center .plan-desc {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* CTA Button */
+        .btn-cta {
+            width: 100%;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-card.side .btn-cta {
+            background: var(--blue-600);
+            color: white;
+            border: none;
+        }
+        
+        .pricing-card.side .btn-cta:hover {
+            background: var(--blue-500);
+            transform: translateY(-2px);
+        }
+        
+        .pricing-card.center .btn-cta {
+            background: white;
+            color: var(--blue-600);
+            border: none;
+        }
+        
+        .pricing-card.center .btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px;
+            font-size: 12px;
+            color: var(--gray-400);
+            position: relative;
+            z-index: 5;
+        }
+        
+        .footer span {
+            color: var(--blue-500);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .pricing-container {
+                flex-direction: column;
+                gap: 32px;
+            }
+            
+            .pricing-card.side.left,
+            .pricing-card.side.right {
+                transform: none;
+            }
+            
+            .pricing-card.center {
+                transform: scale(1.02);
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Lines -->
+    <div class="bg-lines">
+        <div class="bg-line"></div>
+        <div class="bg-line"></div>
+        <div class="bg-line"></div>
+        <div class="bg-line"></div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="logo">
+            <span class="logo-icon">✦</span>
+            Slay
+        </div>
+        <div class="nav-links">
+            <a href="#">Personal <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></a>
+            <a href="#">Company <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></a>
+            <a href="#">Business</a>
+            <a href="#">Holders</a>
+            <a href="#">Banks</a>
+            <a href="#">Blog</a>
+        </div>
+        <div class="nav-right">
+            <span class="nav-text">Help</span>
+            <span class="nav-text">🌐 EN <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></span>
+            <button class="btn-signup">Sign up</button>
+            <button class="btn-login">Log in</button>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main">
+        <div class="badge">
+            <span class="badge-icon">⚡</span>
+            Bank On The Go
+        </div>
+        
+        <h1 class="title">Join the ranks of our customers</h1>
+        <p class="subtitle">Trial Period For 30 Days With No Risk</p>
+        
+        <div class="tab-switch">
+            <button class="tab-btn active">Solo</button>
+            <button class="tab-btn">Joint</button>
+        </div>
+        
+        <div class="pricing-container">
+            <!-- Monthly - Left -->
+            <div class="pricing-card side left">
+                <div class="price">
+                    <span class="price-currency">$</span>
+                    <span class="price-amount">98</span>
+                    <span class="price-period">/ Monthly</span>
+                </div>
+                <div class="plan-name">Monthly</div>
+                <div class="plan-desc">Payment Of $98 Each Month</div>
+                <button class="btn-cta">Start With A Monthly Plan</button>
+            </div>
+            
+            <!-- Quarterly - Center -->
+            <div class="pricing-card center">
+                <div class="popular-badge">The Most Popular</div>
+                <div class="price">
+                    <span class="price-currency">$</span>
+                    <span class="price-amount">92</span>
+                    <span class="price-period">/ Monthly</span>
+                </div>
+                <div class="plan-name">Quarterly</div>
+                <div class="plan-desc">Payment Of $275 Every 3 Months</div>
+                <button class="btn-cta">Start With A Monthly Plan</button>
+            </div>
+            
+            <!-- Annual - Right -->
+            <div class="pricing-card side right">
+                <div class="price">
+                    <span class="price-currency">$</span>
+                    <span class="price-amount">83</span>
+                    <span class="price-period">/ Monthly</span>
+                </div>
+                <div class="plan-name">Annual</div>
+                <div class="plan-desc">Payment Of $998 Each Year</div>
+                <button class="btn-cta">Start With A Monthly Plan</button>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        Built with <span>💙</span> by Claudie • QClay Slay Pricing Exact Copy
+    </footer>
+    
+    <script>
+        // Tab switching
+        const tabs = document.querySelectorAll('.tab-btn');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+        
+        // Parallax on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 2;
+            const y = (e.clientY / window.innerHeight - 0.5) * 2;
+            
+            const cards = document.querySelectorAll('.pricing-card');
+            cards.forEach((card, i) => {
+                if (card.classList.contains('center')) {
+                    card.style.transform = `translateY(-20px) scale(1.05) rotateY(${x * 3}deg) rotateX(${y * -2}deg)`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

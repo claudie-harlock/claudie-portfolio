@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith - QClay Exact Style Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg: #080808;
+            --text: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.4);
+            --accent: #00ff88;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            cursor: none;
+        }
+        
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            transform: translate(-50%, -50%);
+        }
+        
+        .cursor-dot {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Glow Effect */
+        .glow-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.08) 0%, transparent 60%);
+            border-radius: 50%;
+            top: 30%;
+            left: 40%;
+            animation: glowPulse 8s ease-in-out infinite;
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+        
+        /* Particles */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+        }
+        
+        .particle.active {
+            animation: particleFloat 3s ease-out forwards;
+        }
+        
+        @keyframes particleFloat {
+            0% { opacity: 0; transform: translateY(0) scale(1); }
+            20% { opacity: 0.8; }
+            100% { opacity: 0; transform: translateY(-100px) scale(0); }
+        }
+        
+        /* Layout */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 80px;
+        }
+        
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 30px 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent) 0%, #00d4ff 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--text);
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        .nav-btn {
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .nav-btn.primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #080808;
+        }
+        
+        .nav-btn.primary:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 150px 0 100px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-dim);
+            margin-bottom: 60px;
+        }
+        
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: end;
+        }
+        
+        .hero-text {
+            font-size: 17px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 500px;
+        }
+        
+        /* Stats Section */
+        .stats {
+            display: flex;
+            gap: 120px;
+            margin-top: 100px;
+        }
+        
+        .stat {
+            position: relative;
+        }
+        
+        .stat-value {
+            font-size: 100px;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .stat-value .num {
+            background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.5) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-value .suffix {
+            font-size: 50px;
+            color: rgba(255, 255, 255, 0.3);
+            -webkit-text-fill-color: rgba(255, 255, 255, 0.3);
+            margin-left: 4px;
+        }
+        
+        /* Sparkle effect */
+        .stat-value::after {
+            content: '✦';
+            position: absolute;
+            top: -10px;
+            right: -30px;
+            font-size: 16px;
+            color: var(--accent);
+            opacity: 0;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+        
+        .stat:nth-child(1) .stat-value::after { animation-delay: 0s; }
+        .stat:nth-child(2) .stat-value::after { animation-delay: 0.5s; }
+        .stat:nth-child(3) .stat-value::after { animation-delay: 1s; }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+        
+        .stat-label {
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .stat-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            box-shadow: 0 0 20px currentColor;
+        }
+        
+        .stat:nth-child(1) .stat-dot { background: var(--accent); color: var(--accent); }
+        .stat:nth-child(2) .stat-dot { background: #60a5fa; color: #60a5fa; }
+        .stat:nth-child(3) .stat-dot { background: #a78bfa; color: #a78bfa; }
+        
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.1) 80%, transparent);
+            margin: 80px 0;
+        }
+        
+        /* Info Row */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 40px 0;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+        
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        /* Demo Label */
+        .demo-label {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .demo-label span {
+            color: var(--accent);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container { padding: 0 40px; }
+            .nav { padding: 20px 40px; }
+            .hero-content { grid-template-columns: 1fr; gap: 40px; }
+            .stats { flex-direction: column; gap: 60px; }
+            .stat-value { font-size: 72px; }
+            .info-row { flex-direction: column; gap: 24px; }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .stat-value { font-size: 56px; }
+            body { cursor: auto; }
+            .cursor, .cursor-dot { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+    
+    <div class="glow-container">
+        <div class="glow"></div>
+    </div>
+    
+    <div class="particles" id="particles"></div>
+    
+    <nav class="nav">
+        <div class="logo">
+            <div class="logo-icon">△</div>
+            <span>Zenith</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Platform</a>
+            <a href="#">Features</a>
+            <a href="#">Pricing</a>
+            <a href="#">Resources</a>
+        </div>
+        <div class="nav-right">
+            <button class="nav-btn">Sign In</button>
+            <button class="nav-btn primary">Get Started</button>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <section class="hero">
+            <div class="hero-label">Zenith • Creator Platform</div>
+            
+            <div class="hero-content">
+                <div class="hero-text">
+                    We provide unique payment solutions for creators, based upon which we search for the best options to work together with. We provide you with infrastructure that you can use to sell globally and earn commissions without the complexity of business registration!
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">
+                        <span class="num" data-target="400">0</span><span class="suffix">K+</span>
+                    </div>
+                    <div class="stat-label">
+                        <span class="stat-dot"></span>
+                        Paid out to Zenith Creators
+                    </div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">
+                        <span class="num" data-target="15">0</span><span class="suffix">K+</span>
+                    </div>
+                    <div class="stat-label">
+                        <span class="stat-dot"></span>
+                        No. of Zenith creators
+                    </div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">
+                        <span class="num" data-target="16">0</span><span class="suffix">h</span>
+                    </div>
+                    <div class="stat-label">
+                        <span class="stat-dot"></span>
+                        Avg payout processing time
+                    </div>
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="info-row">
+                <div class="info-item">
+                    <div class="info-icon">🌍</div>
+                    <span>Trade with creators<br>from 195+ countries</span>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">⚡</div>
+                    <span>Advanced low-latency<br>technology</span>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">🔒</div>
+                    <span>Bank-grade security<br>& compliance</span>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <div class="demo-label"><span>QClay</span> Exact Style Demo</div>
+    
+    <script>
+        // Custom cursor
+        const cursor = document.getElementById('cursor');
+        const cursorDot = document.getElementById('cursorDot');
+        
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+        });
+        
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.1;
+            cursorY += (mouseY - cursorY) * 0.1;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+        
+        // Particles on click
+        const particles = document.getElementById('particles');
+        document.addEventListener('click', (e) => {
+            for (let i = 0; i < 5; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = e.clientX + 'px';
+                particle.style.top = e.clientY + 'px';
+                particle.style.transform = `translate(${(Math.random() - 0.5) * 100}px, 0)`;
+                particles.appendChild(particle);
+                
+                setTimeout(() => particle.classList.add('active'), 10);
+                setTimeout(() => particle.remove(), 3000);
+            }
+        });
+        
+        // Animated counter
+        const counters = document.querySelectorAll('.num');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = parseInt(entry.target.dataset.target);
+                    animateCounter(entry.target, target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        counters.forEach(counter => observer.observe(counter));
+        
+        function animateCounter(el, target) {
+            const duration = 2500;
+            const start = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeOut = 1 - Math.pow(1 - progress, 4);
+                el.textContent = Math.floor(target * easeOut);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+    </script>
+</body>
+</html>

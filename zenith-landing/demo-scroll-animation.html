@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith - Scroll Animation Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- GSAP + ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg: #0a0a0a;
+            --accent: #00ff88;
+            --accent2: #00d4ff;
+        }
+        
+        html {
+            scroll-behavior: auto; /* GSAP handles smooth scroll */
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            width: 0%;
+            z-index: 1000;
+        }
+        
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 24px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+        }
+        
+        .logo {
+            font-weight: 700;
+            font-size: 24px;
+        }
+        
+        /* Sections */
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: var(--bg);
+        }
+        
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            padding: 0 40px;
+        }
+        
+        .hero-title {
+            font-size: clamp(48px, 10vw, 120px);
+            font-weight: 800;
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            margin-bottom: 30px;
+        }
+        
+        .hero-title .word {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(100px) rotateX(-90deg);
+        }
+        
+        .hero-subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+        }
+        
+        .scroll-indicator span {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .scroll-arrow {
+            width: 24px;
+            height: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            position: relative;
+        }
+        
+        .scroll-arrow::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            width: 4px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 2px;
+            transform: translateX(-50%);
+            animation: scrollBounce 2s infinite;
+        }
+        
+        @keyframes scrollBounce {
+            0%, 100% { top: 8px; opacity: 1; }
+            50% { top: 20px; opacity: 0.3; }
+        }
+        
+        /* Cards Section */
+        .cards-section {
+            background: linear-gradient(180deg, var(--bg) 0%, #0f1419 100%);
+            padding: 100px 60px;
+        }
+        
+        .cards-container {
+            display: flex;
+            gap: 30px;
+            perspective: 1000px;
+        }
+        
+        .card-3d {
+            width: 300px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            transform-style: preserve-3d;
+            transform: rotateY(-30deg) rotateX(10deg) translateZ(-100px);
+            opacity: 0;
+            transition: transform 0.5s ease;
+        }
+        
+        .card-3d:hover {
+            transform: rotateY(0deg) rotateX(0deg) translateZ(20px) !important;
+        }
+        
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 24px;
+        }
+        
+        .card-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .card-desc {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.6;
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            background: #0f1419;
+        }
+        
+        .stats-content {
+            display: flex;
+            gap: 100px;
+            text-align: center;
+        }
+        
+        .stat-item {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+        
+        .stat-number {
+            font-size: 100px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 16px;
+        }
+        
+        /* Parallax Section */
+        .parallax-section {
+            height: 150vh;
+            background: linear-gradient(180deg, #0f1419 0%, #1a0a2e 100%);
+            position: relative;
+        }
+        
+        .parallax-text {
+            position: absolute;
+            font-size: 200px;
+            font-weight: 800;
+            white-space: nowrap;
+            color: rgba(255, 255, 255, 0.03);
+            left: 0;
+        }
+        
+        .parallax-text.t1 { top: 10%; }
+        .parallax-text.t2 { top: 40%; }
+        .parallax-text.t3 { top: 70%; }
+        
+        .parallax-content {
+            position: sticky;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: center;
+            padding: 0 40px;
+        }
+        
+        .parallax-title {
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        /* Phone Section */
+        .phone-section {
+            background: linear-gradient(180deg, #1a0a2e 0%, #0a0a0a 100%);
+            perspective: 1000px;
+        }
+        
+        .phone-mockup {
+            width: 280px;
+            height: 560px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #0a0a1a 100%);
+            border-radius: 40px;
+            border: 4px solid #333;
+            padding: 20px;
+            transform: rotateY(0deg) rotateX(0deg);
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
+        }
+        
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            border-radius: 28px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .phone-logo {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+        
+        .phone-text {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: var(--bg);
+            text-align: center;
+        }
+        
+        .cta-title {
+            font-size: 72px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        .cta-title span {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            padding: 20px 48px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: var(--bg);
+            font-weight: 700;
+            font-size: 18px;
+            border-radius: 100px;
+            text-decoration: none;
+            opacity: 0;
+            transform: translateY(30px) scale(0.9);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-3px) scale(1.05) !important;
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.3);
+        }
+        
+        /* Footer */
+        .footer {
+            min-height: auto;
+            padding: 60px;
+            background: var(--bg);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .footer-text span {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <nav class="nav">
+        <div class="logo">△ Zenith</div>
+        <div class="nav-links">Scroll to explore ↓</div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="word">Scroll</span>
+                <span class="word">Magic</span>
+                <span class="word" style="color: #00ff88">Demo</span>
+            </h1>
+            <p class="hero-subtitle">스크롤하면 모든 것이 살아납니다</p>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- 3D Cards -->
+    <section class="cards-section">
+        <div class="cards-container">
+            <div class="card-3d">
+                <div class="card-icon">🌍</div>
+                <div class="card-title">Global Reach</div>
+                <div class="card-desc">Accept payments from 195+ countries with local payment methods.</div>
+            </div>
+            <div class="card-3d">
+                <div class="card-icon">⚡</div>
+                <div class="card-title">Instant Setup</div>
+                <div class="card-desc">From signup to first payment in under 5 minutes.</div>
+            </div>
+            <div class="card-3d">
+                <div class="card-icon">🔒</div>
+                <div class="card-title">Secure</div>
+                <div class="card-desc">Bank-grade security with full compliance.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats-section">
+        <div class="stats-content">
+            <div class="stat-item">
+                <div class="stat-number">400K+</div>
+                <div class="stat-label">Paid to Creators</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">15K+</div>
+                <div class="stat-label">Active Creators</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">16h</div>
+                <div class="stat-label">Avg Payout Time</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parallax -->
+    <section class="parallax-section">
+        <div class="parallax-text t1">ZENITH ZENITH ZENITH ZENITH</div>
+        <div class="parallax-text t2">CREATORS CREATORS CREATORS</div>
+        <div class="parallax-text t3">GLOBAL GLOBAL GLOBAL GLOBAL</div>
+        <div class="parallax-content">
+            <h2 class="parallax-title">Scroll Parallax</h2>
+            <p style="color: rgba(255,255,255,0.5)">텍스트가 다른 속도로 움직입니다</p>
+        </div>
+    </section>
+
+    <!-- Phone -->
+    <section class="phone-section">
+        <div class="phone-mockup" id="phoneMockup">
+            <div class="phone-screen">
+                <div class="phone-logo">△</div>
+                <div class="phone-text">Zenith App</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2 class="cta-title">Ready to <span>Start</span>?</h2>
+        <a href="#" class="cta-btn">Get Started Free →</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-text">Built with <span>💜</span> by Claudie using GSAP</div>
+            <div class="footer-text">Scroll Animation Demo</div>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Progress bar
+        gsap.to('.progress-bar', {
+            width: '100%',
+            ease: 'none',
+            scrollTrigger: {
+                trigger: 'body',
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 0.3
+            }
+        });
+        
+        // Hero animation
+        gsap.to('.hero-title .word', {
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            duration: 1,
+            stagger: 0.15,
+            ease: 'back.out(1.7)',
+            delay: 0.3
+        });
+        
+        gsap.to('.hero-subtitle', {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            delay: 0.8
+        });
+        
+        gsap.to('.scroll-indicator', {
+            opacity: 1,
+            duration: 1,
+            delay: 1.2
+        });
+        
+        // 3D Cards
+        gsap.to('.card-3d', {
+            opacity: 1,
+            rotateY: 0,
+            rotateX: 0,
+            z: 0,
+            stagger: 0.2,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.cards-section',
+                start: 'top 70%',
+                end: 'top 30%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+        
+        // Stats
+        gsap.to('.stat-item', {
+            opacity: 1,
+            scale: 1,
+            stagger: 0.15,
+            duration: 0.8,
+            ease: 'back.out(1.7)',
+            scrollTrigger: {
+                trigger: '.stats-section',
+                start: 'top 60%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+        
+        // Parallax text
+        gsap.to('.parallax-text.t1', {
+            x: -500,
+            scrollTrigger: {
+                trigger: '.parallax-section',
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1
+            }
+        });
+        
+        gsap.to('.parallax-text.t2', {
+            x: 300,
+            scrollTrigger: {
+                trigger: '.parallax-section',
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1
+            }
+        });
+        
+        gsap.to('.parallax-text.t3', {
+            x: -400,
+            scrollTrigger: {
+                trigger: '.parallax-section',
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1
+            }
+        });
+        
+        // Phone 3D rotation on scroll
+        gsap.to('#phoneMockup', {
+            rotateY: 360,
+            rotateX: 20,
+            scrollTrigger: {
+                trigger: '.phone-section',
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 2
+            }
+        });
+        
+        // CTA
+        gsap.to('.cta-title', {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            scrollTrigger: {
+                trigger: '.cta-section',
+                start: 'top 70%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+        
+        gsap.to('.cta-btn', {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            delay: 0.3,
+            scrollTrigger: {
+                trigger: '.cta-section',
+                start: 'top 70%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+    </script>
+</body>
+</html>

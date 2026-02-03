@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith — Start Earning</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg: #0a0a0a;
+            --green: #22c55e;
+            --green-dark: #16a34a;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Crypto Ticker */
+        .ticker-wrapper {
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .ticker {
+            display: flex;
+            animation: ticker 30s linear infinite;
+            width: max-content;
+        }
+        
+        .ticker:hover {
+            animation-play-state: paused;
+        }
+        
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .ticker-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            white-space: nowrap;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .ticker-item .icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+        }
+        
+        .ticker-item .icon.eth { background: #627eea; }
+        .ticker-item .icon.sol { background: linear-gradient(135deg, #9945ff 0%, #14f195 100%); }
+        .ticker-item .icon.xrp { background: #23292f; }
+        .ticker-item .icon.btc { background: #f7931a; }
+        .ticker-item .icon.bnb { background: #f3ba2f; }
+        .ticker-item .icon.ada { background: #0033ad; }
+        .ticker-item .icon.dot { background: #e6007a; }
+        .ticker-item .icon.avax { background: #e84142; }
+        
+        .ticker-item .name {
+            font-weight: 600;
+            color: white;
+        }
+        
+        .ticker-item .price {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .ticker-item .change {
+            font-weight: 600;
+        }
+        
+        .ticker-item .change.up { color: var(--green); }
+        .ticker-item .change.down { color: #ef4444; }
+        
+        .ticker-item .dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            margin-left: 16px;
+        }
+        
+        /* Main Section */
+        .main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: calc(100vh - 50px);
+            position: relative;
+        }
+        
+        /* Left Side - Text */
+        .left-side {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-size: clamp(28px, 3vw, 36px);
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 40px;
+            max-width: 320px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: var(--bg);
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-primary .arrow {
+            width: 20px;
+            height: 20px;
+            background: var(--green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        /* Right Side - Typography + 3D */
+        .right-side {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        /* Repeating Typography */
+        .typography-stack {
+            position: absolute;
+            right: -5%;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            z-index: 1;
+        }
+        
+        .typo-line {
+            font-size: clamp(60px, 8vw, 100px);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            line-height: 0.95;
+            white-space: nowrap;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .typo-line:nth-child(1) { opacity: 0.4; }
+        .typo-line:nth-child(2) { opacity: 0.5; }
+        .typo-line:nth-child(3) { opacity: 0.6; }
+        .typo-line:nth-child(4) { 
+            color: var(--green);
+            -webkit-text-stroke: none;
+            opacity: 1;
+        }
+        .typo-line:nth-child(5) { opacity: 0.6; }
+        .typo-line:nth-child(6) { opacity: 0.5; }
+        .typo-line:nth-child(7) { opacity: 0.4; }
+        
+        /* 3D Twist Shape */
+        .twist-container {
+            position: absolute;
+            width: 300px;
+            height: 500px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .twist {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .twist-strand {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .twist svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .twist-path {
+            fill: none;
+            stroke: url(#twistGradient);
+            stroke-width: 3;
+            stroke-linecap: round;
+        }
+        
+        /* Glow effect behind twist */
+        .twist-glow {
+            position: absolute;
+            width: 200px;
+            height: 400px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(ellipse, rgba(34, 197, 94, 0.15) 0%, transparent 70%);
+            filter: blur(40px);
+            z-index: 0;
+        }
+        
+        /* Animated particles */
+        .particles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 3;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--green);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat 4s ease-in-out infinite;
+        }
+        
+        @keyframes particleFloat {
+            0% { opacity: 0; transform: translateY(100px) scale(0); }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-100px) scale(0); }
+        }
+        
+        /* Footer badge */
+        .footer-badge {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .footer-badge span {
+            color: var(--green);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main {
+                grid-template-columns: 1fr;
+            }
+            
+            .left-side {
+                padding: 60px 40px;
+                text-align: center;
+                align-items: center;
+            }
+            
+            .right-side {
+                min-height: 60vh;
+            }
+            
+            .typography-stack {
+                right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Crypto Ticker -->
+    <div class="ticker-wrapper">
+        <div class="ticker">
+            <div class="ticker-item">
+                <span class="icon eth">E</span>
+                <span class="name">Ethereum</span>
+                <span class="price">$2856 USD</span>
+                <span class="change up">+0.82%</span>
+                <span class="dot"></span>
+            </div>
+            <div class="ticker-item">
+                <span class="icon sol">S</span>
+                <span class="name">Solana</span>
+                <span class="price">$238 USD</span>
+                <span class="change up">+4.12%</span>
+                <span class="dot"></span>
+            </div>
+            <div class="ticker-item">
+                <span class="icon xrp">X</span>
+                <span class="name">XRP</span>
+                <span class="price">$2.86 USD</span>
+                <span class="change down">-1.24%</span>
+                <span class="dot"></span>
+            </div>
+            <div class="ticker-item">
+                <span class="icon btc">₿</span>
+                <span class="name">Bitcoin</span>
+                <span class="price">$102K USD</span>
+                <span class="change up">+2.36%</span>
+                <span class="dot"></span>
+            </div>
+            <div class="ticker-item">
+                <span class="icon bnb">B</span>
+                <span class="name">BNB</span>
+                <span class="price">$685 USD</span>
+                <span class="change up">+0.45%</span>
+                <span class="dot"></span>
+            </div>
+            <div class="ticker-item">
+                <span class="icon ada">A</span>
+                <span class="name">Cardano</span>
+                <span class="price">$0.98 USD</span>
+                <span class="change down">-0.87%</span>
+                <span class="dot"></span>
+            </div>
+            <div class="ticker-item">
+                <span class="icon dot">●</span>
+                <span class="name">Polkadot</span>
+                <span class="price">$8.42 USD</span>
+                <span class="change up">+1.23%</span>
+                <span class="dot"></span>
+            </div>
+            <div class="ticker-item">
+                <span class="icon avax">A</span>
+                <span class="name">Avalanche</span>
+                <span class="price">$42.50 USD</span>
+                <span class="change up">+3.67%</span>
+                <span class="dot"></span>
+            </div>
+            <!-- Duplicate for seamless loop -->
+            <div class="ticker-item">
+                <span class="icon eth">E</span>
+                <span class="name">Ethereum</span>
+                <span class="price">$2856 USD</span>
+                <span class="change up">+0.82%</span>
+                <span class="dot"></span>
+            </div>
+            <div class="ticker-item">
+                <span class="icon sol">S</span>
+                <span class="name">Solana</span>
+                <span class="price">$238 USD</span>
+                <span class="change up">+4.12%</span>
+                <span class="dot"></span>
+            </div>
+            <div class="ticker-item">
+                <span class="icon xrp">X</span>
+                <span class="name">XRP</span>
+                <span class="price">$2.86 USD</span>
+                <span class="change down">-1.24%</span>
+                <span class="dot"></span>
+            </div>
+            <div class="ticker-item">
+                <span class="icon btc">₿</span>
+                <span class="name">Bitcoin</span>
+                <span class="price">$102K USD</span>
+                <span class="change up">+2.36%</span>
+                <span class="dot"></span>
+            </div>
+            <div class="ticker-item">
+                <span class="icon bnb">B</span>
+                <span class="name">BNB</span>
+                <span class="price">$685 USD</span>
+                <span class="change up">+0.45%</span>
+                <span class="dot"></span>
+            </div>
+            <div class="ticker-item">
+                <span class="icon ada">A</span>
+                <span class="name">Cardano</span>
+                <span class="price">$0.98 USD</span>
+                <span class="change down">-0.87%</span>
+                <span class="dot"></span>
+            </div>
+            <div class="ticker-item">
+                <span class="icon dot">●</span>
+                <span class="name">Polkadot</span>
+                <span class="price">$8.42 USD</span>
+                <span class="change up">+1.23%</span>
+                <span class="dot"></span>
+            </div>
+            <div class="ticker-item">
+                <span class="icon avax">A</span>
+                <span class="name">Avalanche</span>
+                <span class="price">$42.50 USD</span>
+                <span class="change up">+3.67%</span>
+                <span class="dot"></span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Section -->
+    <section class="main">
+        <!-- Left Side -->
+        <div class="left-side">
+            <h1 class="hero-title">
+                Stop losing your own money, join us and start earning!
+            </h1>
+            <div class="hero-buttons">
+                <button class="btn btn-primary">
+                    Join Us
+                    <span class="arrow">→</span>
+                </button>
+                <button class="btn btn-secondary">Free Trial</button>
+            </div>
+        </div>
+        
+        <!-- Right Side -->
+        <div class="right-side">
+            <div class="twist-glow"></div>
+            
+            <!-- 3D Twist SVG -->
+            <div class="twist-container">
+                <svg viewBox="0 0 300 500" preserveAspectRatio="xMidYMid meet">
+                    <defs>
+                        <linearGradient id="twistGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#22c55e;stop-opacity:0.2" />
+                            <stop offset="30%" style="stop-color:#22c55e;stop-opacity:0.8" />
+                            <stop offset="50%" style="stop-color:#ffffff;stop-opacity:1" />
+                            <stop offset="70%" style="stop-color:#22c55e;stop-opacity:0.8" />
+                            <stop offset="100%" style="stop-color:#22c55e;stop-opacity:0.2" />
+                        </linearGradient>
+                    </defs>
+                    <!-- DNA-like twist strands -->
+                    <path class="twist-path" d="M150,0 
+                        Q200,40 150,80 Q100,120 150,160 Q200,200 150,240 
+                        Q100,280 150,320 Q200,360 150,400 Q100,440 150,480 Q200,520 150,560" 
+                        stroke-dasharray="10,5" />
+                    <path class="twist-path" d="M150,0 
+                        Q100,40 150,80 Q200,120 150,160 Q100,200 150,240 
+                        Q200,280 150,320 Q100,360 150,400 Q200,440 150,480 Q100,520 150,560"
+                        stroke-dasharray="10,5" />
+                    <!-- Connecting lines -->
+                    <g stroke="rgba(34,197,94,0.3)" stroke-width="1">
+                        <line x1="110" y1="40" x2="190" y2="40" />
+                        <line x1="190" y1="120" x2="110" y2="120" />
+                        <line x1="110" y1="200" x2="190" y2="200" />
+                        <line x1="190" y1="280" x2="110" y2="280" />
+                        <line x1="110" y1="360" x2="190" y2="360" />
+                        <line x1="190" y1="440" x2="110" y2="440" />
+                    </g>
+                    <!-- Dots at intersections -->
+                    <g fill="#22c55e">
+                        <circle cx="150" cy="80" r="5" opacity="0.8" />
+                        <circle cx="150" cy="160" r="5" opacity="0.8" />
+                        <circle cx="150" cy="240" r="6" fill="white" />
+                        <circle cx="150" cy="320" r="5" opacity="0.8" />
+                        <circle cx="150" cy="400" r="5" opacity="0.8" />
+                    </g>
+                </svg>
+            </div>
+            
+            <!-- Typography Stack -->
+            <div class="typography-stack">
+                <div class="typo-line">Start earning</div>
+                <div class="typo-line">Start earning</div>
+                <div class="typo-line">Start earning</div>
+                <div class="typo-line">Start earning</div>
+                <div class="typo-line">Start earning</div>
+                <div class="typo-line">Start earning</div>
+                <div class="typo-line">Start earning</div>
+            </div>
+            
+            <!-- Particles -->
+            <div class="particles" id="particles"></div>
+        </div>
+    </section>
+    
+    <div class="footer-badge"><span>QClay</span> Style • Trading Platform</div>
+    
+    <script>
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = (30 + Math.random() * 40) + '%';
+            particle.style.top = (20 + Math.random() * 60) + '%';
+            particle.style.animationDelay = (Math.random() * 4) + 's';
+            particle.style.animationDuration = (3 + Math.random() * 2) + 's';
+            particlesContainer.appendChild(particle);
+        }
+        
+        // Parallax effect on typography
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 2;
+            const y = (e.clientY / window.innerHeight - 0.5) * 2;
+            
+            const typoLines = document.querySelectorAll('.typo-line');
+            typoLines.forEach((line, i) => {
+                const offset = (i - 3) * 5;
+                line.style.transform = `translateX(${x * offset}px)`;
+            });
+            
+            const twistContainer = document.querySelector('.twist-container');
+            twistContainer.style.transform = `translateX(-50%) rotateY(${x * 10}deg) rotateX(${y * -5}deg)`;
+        });
+    </script>
+</body>
+</html>

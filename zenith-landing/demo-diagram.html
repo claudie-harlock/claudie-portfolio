@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith - Flow Diagram Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #1e3a5f 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .diagram-container {
+            position: relative;
+            width: 900px;
+            height: 600px;
+        }
+        
+        /* Grid Background */
+        .grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        /* SVG Lines */
+        .flow-lines {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+        
+        .flow-line {
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+        }
+        
+        .line-blue { stroke: #60a5fa; }
+        .line-gray { stroke: #94a3b8; }
+        .line-red { stroke: #f87171; }
+        
+        .flow-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawLine 2s ease forwards;
+        }
+        
+        .line-1 { animation-delay: 0s; }
+        .line-2 { animation-delay: 0.3s; }
+        .line-3 { animation-delay: 0.6s; }
+        .line-4 { animation-delay: 0.9s; }
+        
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+        
+        /* Nodes */
+        .node {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 20px;
+            z-index: 2;
+            opacity: 0;
+            transform: scale(0.8) translateY(20px);
+            animation: nodeAppear 0.6s ease forwards;
+        }
+        
+        .node-1 { top: 80px; left: 350px; animation-delay: 0.2s; }
+        .node-2 { top: 230px; left: 150px; animation-delay: 0.5s; }
+        .node-3 { top: 230px; left: 550px; animation-delay: 0.8s; }
+        .node-4 { top: 420px; left: 350px; animation-delay: 1.1s; }
+        
+        @keyframes nodeAppear {
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .node-large {
+            width: 200px;
+            border: 2px dashed rgba(100, 200, 255, 0.4);
+            background: rgba(100, 200, 255, 0.05);
+        }
+        
+        .node-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4ade80 0%, #22d3ee 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            font-size: 24px;
+        }
+        
+        .node-icon.blue {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+        }
+        
+        .node-icon.orange {
+            background: linear-gradient(135deg, #f97316 0%, #eab308 100%);
+        }
+        
+        .node-icon.purple {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+        }
+        
+        .node-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+        
+        .node-subtitle {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Avatar Node */
+        .node-avatar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 24px;
+        }
+        
+        .avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .avatar-icon {
+            font-size: 24px;
+        }
+        
+        .avatar-info {
+            color: white;
+        }
+        
+        .avatar-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .avatar-role {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Connection dots */
+        .dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            z-index: 3;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            animation: dotAppear 0.3s ease forwards;
+        }
+        
+        .dot-1 { top: 180px; left: 448px; animation-delay: 0.4s; }
+        .dot-2 { top: 280px; left: 290px; animation-delay: 0.7s; }
+        .dot-3 { top: 280px; left: 608px; animation-delay: 1.0s; }
+        .dot-4 { top: 380px; left: 448px; animation-delay: 1.3s; }
+        
+        .dot.blue { background: #60a5fa; box-shadow: 0 0 20px rgba(96, 165, 250, 0.8); }
+        .dot.orange { background: #f97316; box-shadow: 0 0 20px rgba(249, 115, 22, 0.8); }
+        
+        @keyframes dotAppear {
+            to { opacity: 1; }
+        }
+        
+        /* Pulse animation on dots */
+        .dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            opacity: 0;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+        }
+        
+        /* Title */
+        .demo-title {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .demo-title span {
+            color: #4ade80;
+        }
+        
+        /* Restart button */
+        .restart-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #4ade80 0%, #22d3ee 100%);
+            color: #0a0a0a;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .restart-btn:hover {
+            transform: translateX(-50%) translateY(-2px);
+            box-shadow: 0 10px 30px rgba(74, 222, 128, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-title">Zenith <span>Flow Diagram</span> Demo</div>
+    
+    <div class="diagram-container">
+        <div class="grid-bg"></div>
+        
+        <!-- SVG Lines -->
+        <svg class="flow-lines" viewBox="0 0 900 600">
+            <!-- Line from Node 1 to Node 2 -->
+            <path class="flow-line line-blue line-1" d="M 450 180 Q 350 200 300 280" />
+            <!-- Line from Node 1 to Node 3 -->
+            <path class="flow-line line-gray line-2" d="M 450 180 Q 550 200 600 280" />
+            <!-- Line from Node 2 to Node 4 -->
+            <path class="flow-line line-red line-3" d="M 300 330 Q 350 380 450 420" />
+            <!-- Line from Node 3 to Node 4 -->
+            <path class="flow-line line-blue line-4" d="M 600 330 Q 550 380 450 420" />
+        </svg>
+        
+        <!-- Connection Dots -->
+        <div class="dot dot-1 blue"></div>
+        <div class="dot dot-2"></div>
+        <div class="dot dot-3 blue"></div>
+        <div class="dot dot-4 orange"></div>
+        
+        <!-- Nodes -->
+        <div class="node node-1 node-large">
+            <div class="node-icon">📦</div>
+            <div class="node-title">Product Created</div>
+            <div class="node-subtitle">Digital goods ready</div>
+        </div>
+        
+        <div class="node node-2 node-avatar">
+            <div class="avatar">
+                <span class="avatar-icon">👤</span>
+            </div>
+            <div class="avatar-info">
+                <div class="avatar-name">Creator</div>
+                <div class="avatar-role">You</div>
+            </div>
+        </div>
+        
+        <div class="node node-3">
+            <div class="node-icon blue">💳</div>
+            <div class="node-title">Zenith Processes</div>
+            <div class="node-subtitle">Payment & Tax handling</div>
+        </div>
+        
+        <div class="node node-4">
+            <div class="node-icon purple">💰</div>
+            <div class="node-title">Payout</div>
+            <div class="node-subtitle">Weekly to your bank</div>
+        </div>
+    </div>
+    
+    <button class="restart-btn" onclick="location.reload()">Replay Animation ↻</button>
+</body>
+</html>

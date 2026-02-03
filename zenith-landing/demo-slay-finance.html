@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slay — Finance Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --blue-50: #eff6ff;
+            --blue-100: #dbeafe;
+            --blue-200: #bfdbfe;
+            --blue-300: #93c5fd;
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-900: #111827;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #fafbff;
+            color: var(--gray-900);
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .logo-icon {
+            font-size: 20px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            font-size: 14px;
+        }
+        
+        .nav-links a {
+            color: var(--gray-600);
+            text-decoration: none;
+        }
+        
+        .nav-right {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .btn-signup {
+            padding: 10px 20px;
+            background: var(--blue-500);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .btn-login {
+            padding: 10px 20px;
+            background: white;
+            color: var(--gray-600);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        /* Main Container */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 40px 60px;
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 40px;
+            position: relative;
+            min-height: 80vh;
+        }
+        
+        /* Left Side - Cards Collage */
+        .left-side {
+            position: relative;
+            min-height: 600px;
+        }
+        
+        /* Background watermark */
+        .watermark {
+            position: absolute;
+            top: -20px;
+            left: -40px;
+            font-size: 140px;
+            font-weight: 800;
+            color: transparent;
+            background: linear-gradient(180deg, var(--blue-100) 0%, rgba(219, 234, 254, 0) 100%);
+            -webkit-background-clip: text;
+            letter-spacing: -0.03em;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        /* Wave decoration */
+        .wave-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .wave-bg::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: -10%;
+            width: 80%;
+            height: 70%;
+            background: linear-gradient(135deg, var(--blue-100) 0%, var(--blue-200) 50%, var(--blue-100) 100%);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            opacity: 0.5;
+            animation: morphWave 15s ease-in-out infinite;
+        }
+        
+        @keyframes morphWave {
+            0%, 100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+            50% { border-radius: 60% 40% 30% 70% / 50% 60% 40% 60%; }
+        }
+        
+        /* Cards */
+        .card {
+            position: absolute;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Main Hero Card */
+        .card-hero {
+            width: 360px;
+            padding: 28px;
+            top: 40px;
+            left: 80px;
+            z-index: 10;
+        }
+        
+        .card-hero-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .card-hero-logo {
+            width: 28px;
+            height: 28px;
+            background: var(--blue-500);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+        
+        .card-hero-nav {
+            display: flex;
+            gap: 16px;
+            margin-left: auto;
+            font-size: 11px;
+            color: var(--gray-400);
+        }
+        
+        .card-hero-title {
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 12px;
+        }
+        
+        .card-hero-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .card-hero-btns {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-join {
+            padding: 10px 20px;
+            background: var(--blue-500);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .btn-create {
+            padding: 10px 20px;
+            background: white;
+            color: var(--gray-600);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        /* Dashboard Card */
+        .card-dashboard {
+            width: 320px;
+            padding: 20px;
+            top: 180px;
+            left: 0;
+            z-index: 8;
+        }
+        
+        .card-dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .card-dash-label {
+            font-size: 11px;
+            color: var(--gray-500);
+        }
+        
+        .card-dash-tabs {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .dash-tab {
+            padding: 4px 10px;
+            background: var(--blue-50);
+            color: var(--blue-600);
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+        
+        .dash-tab.outline {
+            background: transparent;
+            border: 1px solid var(--gray-200);
+            color: var(--gray-500);
+        }
+        
+        .card-dash-title {
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+        
+        .card-dash-stats {
+            display: flex;
+            align-items: flex-end;
+            gap: 20px;
+        }
+        
+        /* Circle Chart */
+        .circle-chart {
+            position: relative;
+            width: 70px;
+            height: 70px;
+        }
+        
+        .circle-chart svg {
+            transform: rotate(-90deg);
+        }
+        
+        .circle-bg {
+            fill: none;
+            stroke: var(--gray-100);
+            stroke-width: 6;
+        }
+        
+        .circle-fill {
+            fill: none;
+            stroke: var(--blue-500);
+            stroke-width: 6;
+            stroke-linecap: round;
+            stroke-dasharray: 188;
+            stroke-dashoffset: 13;
+        }
+        
+        .circle-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--blue-600);
+        }
+        
+        /* Line Chart */
+        .line-chart {
+            flex: 1;
+            height: 50px;
+        }
+        
+        .line-chart svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .chart-line {
+            fill: none;
+            stroke: var(--blue-400);
+            stroke-width: 2;
+        }
+        
+        .chart-area {
+            fill: url(#chartGradient);
+        }
+        
+        /* Stat value */
+        .stat-box {
+            text-align: right;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--blue-600);
+        }
+        
+        .stat-value span {
+            font-size: 14px;
+            color: var(--gray-400);
+        }
+        
+        .stat-label {
+            font-size: 10px;
+            color: var(--gray-400);
+        }
+        
+        /* Why Choose Us Card */
+        .card-why {
+            width: 280px;
+            padding: 20px;
+            bottom: 20px;
+            left: 20px;
+            z-index: 9;
+        }
+        
+        .why-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .why-avatars {
+            display: flex;
+            margin-bottom: 16px;
+        }
+        
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid white;
+            margin-left: -8px;
+            background: linear-gradient(135deg, var(--blue-400), var(--blue-600));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .avatar:first-child {
+            margin-left: 0;
+        }
+        
+        .avatar.photo {
+            background: #f59e0b;
+        }
+        
+        .why-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        
+        .why-tag {
+            padding: 6px 12px;
+            background: var(--gray-100);
+            border-radius: 6px;
+            font-size: 11px;
+            color: var(--gray-600);
+        }
+        
+        .why-stat {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            margin-top: 16px;
+        }
+        
+        .why-stat-val {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--blue-500), var(--blue-600));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Right Side */
+        .right-side {
+            padding-top: 20px;
+        }
+        
+        /* Small info cards */
+        .info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            margin-bottom: 16px;
+            max-width: 280px;
+        }
+        
+        .info-card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .info-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--blue-50);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        .info-label {
+            font-size: 11px;
+            color: var(--gray-500);
+        }
+        
+        .info-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .info-desc {
+            font-size: 11px;
+            color: var(--gray-400);
+        }
+        
+        /* Avatars row */
+        .avatars-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0;
+        }
+        
+        .avatar-with-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .avatar-with-name .avatar {
+            width: 28px;
+            height: 28px;
+            margin: 0;
+        }
+        
+        .avatar-name {
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        /* Progress bar */
+        .progress-mini {
+            height: 4px;
+            background: var(--gray-100);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        
+        .progress-mini-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--blue-400), var(--blue-500));
+            border-radius: 2px;
+        }
+        
+        /* Join section */
+        .join-section {
+            margin-top: 32px;
+        }
+        
+        .join-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        /* Pricing card */
+        .pricing-card {
+            background: linear-gradient(135deg, var(--blue-50) 0%, white 100%);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 200px;
+            border: 1px solid var(--blue-100);
+        }
+        
+        .pricing-price {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 4px;
+        }
+        
+        .pricing-currency {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        
+        .pricing-amount {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1;
+            background: linear-gradient(135deg, var(--blue-500), var(--blue-600));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .pricing-period {
+            font-size: 12px;
+            color: var(--gray-400);
+            margin-bottom: 16px;
+        }
+        
+        .pricing-label {
+            font-size: 11px;
+            color: var(--gray-500);
+            margin-bottom: 4px;
+        }
+        
+        .pricing-desc {
+            font-size: 10px;
+            color: var(--gray-400);
+            margin-bottom: 16px;
+        }
+        
+        .btn-monthly {
+            width: 100%;
+            padding: 10px;
+            background: var(--blue-500);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px;
+            font-size: 12px;
+            color: var(--gray-400);
+        }
+        
+        .footer span {
+            color: var(--blue-500);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main {
+                grid-template-columns: 1fr;
+            }
+            
+            .left-side {
+                min-height: 500px;
+            }
+            
+            .watermark {
+                font-size: 80px;
+            }
+            
+            .card-hero {
+                width: 300px;
+                left: 20px;
+            }
+            
+            .card-dashboard {
+                width: 260px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="logo">
+            <span class="logo-icon">✦</span>
+            Slay
+        </div>
+        <div class="nav-links">
+            <a href="#">Personal</a>
+            <a href="#">Company</a>
+            <a href="#">Business</a>
+            <a href="#">Holders</a>
+            <a href="#">Banks</a>
+            <a href="#">Blog</a>
+        </div>
+        <div class="nav-right">
+            <span style="font-size: 13px; color: var(--gray-400);">Help</span>
+            <span style="font-size: 13px; color: var(--gray-400);">🌐 EN</span>
+            <button class="btn-signup">Sign up</button>
+            <button class="btn-login">Log in</button>
+        </div>
+    </nav>
+    
+    <main class="main">
+        <!-- Left Side - Cards Collage -->
+        <div class="left-side">
+            <div class="watermark">Financial</div>
+            <div class="wave-bg"></div>
+            
+            <!-- Main Hero Card -->
+            <div class="card card-hero">
+                <div class="card-hero-header">
+                    <div class="card-hero-logo">△</div>
+                    <div class="card-hero-nav">
+                        <span>Home</span>
+                        <span>About</span>
+                        <span>Cards</span>
+                    </div>
+                </div>
+                <h2 class="card-hero-title">Unlock a world of seamless payments</h2>
+                <p class="card-hero-desc">Go Cashless And Experience The Future Of Payments. Simplify Transactions, Enjoy Security, And Embrace Convenience Like Never Before.</p>
+                <div class="card-hero-btns">
+                    <button class="btn-join">Join Now</button>
+                    <button class="btn-create">Create Account</button>
+                </div>
+            </div>
+            
+            <!-- Dashboard Card -->
+            <div class="card card-dashboard">
+                <div class="card-dash-header">
+                    <div>
+                        <span class="card-dash-label">Start Your Business</span>
+                        <div style="font-weight: 600; font-size: 12px; margin-top: 2px;">With New App</div>
+                    </div>
+                    <div class="card-dash-tabs">
+                        <span class="dash-tab">Efficiency</span>
+                        <span class="dash-tab outline">Reliability</span>
+                    </div>
+                </div>
+                <div class="card-dash-title">Start Managing Your Finances with Our New Tool</div>
+                <div class="card-dash-stats">
+                    <div class="circle-chart">
+                        <svg width="70" height="70">
+                            <circle class="circle-bg" cx="35" cy="35" r="30" />
+                            <circle class="circle-fill" cx="35" cy="35" r="30" />
+                        </svg>
+                        <div class="circle-text">93%</div>
+                    </div>
+                    <div class="line-chart">
+                        <svg viewBox="0 0 120 50">
+                            <defs>
+                                <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:0.3" />
+                                    <stop offset="100%" style="stop-color:#60a5fa;stop-opacity:0" />
+                                </linearGradient>
+                            </defs>
+                            <path class="chart-area" d="M0,40 Q20,38 40,30 T60,25 T80,15 T100,18 T120,10 L120,50 L0,50 Z" />
+                            <path class="chart-line" d="M0,40 Q20,38 40,30 T60,25 T80,15 T100,18 T120,10" />
+                        </svg>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">₩25.9<span>M</span></div>
+                        <div class="stat-label">December</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Why Choose Us Card -->
+            <div class="card card-why">
+                <div class="why-title">Why customers choose us</div>
+                <div class="why-avatars">
+                    <div class="avatar">JK</div>
+                    <div class="avatar photo">MR</div>
+                    <div class="avatar">SL</div>
+                </div>
+                <div class="why-tags">
+                    <span class="why-tag">Global</span>
+                    <span class="why-tag">Fast</span>
+                    <span class="why-tag">Secure</span>
+                </div>
+                <div class="why-stat">
+                    <span class="why-stat-val">8.9</span>
+                    <span style="font-size: 14px; color: var(--gray-400);">M</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Side -->
+        <div class="right-side">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Why choose us?</div>
+            <p style="font-size: 12px; color: var(--gray-500); margin-bottom: 24px; max-width: 260px;">We Offer Comprehensive Financial Solutions Tailored To Your Needs.</p>
+            
+            <div class="info-card">
+                <div class="info-card-header">
+                    <div class="info-icon">📊</div>
+                    <span class="info-label">Slay</span>
+                </div>
+                <div class="info-title">Custom Financial Charts</div>
+                <div class="progress-mini">
+                    <div class="progress-mini-fill" style="width: 75%;"></div>
+                </div>
+            </div>
+            
+            <div class="avatars-row">
+                <div class="avatar-with-name">
+                    <div class="avatar">EH</div>
+                    <div>
+                        <div class="avatar-name">Emily Harris</div>
+                        <div style="font-size: 10px; color: var(--gray-400);">This Projection is Signifi...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <div class="info-card-header">
+                    <div class="info-icon">✦</div>
+                    <span class="info-label">Slay</span>
+                </div>
+                <div class="info-title">Custom Financial Reports</div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
+                    <div class="avatar" style="width: 24px; height: 24px; font-size: 9px;">JK</div>
+                    <span style="font-size: 10px; color: var(--gray-400);">30 Members</span>
+                </div>
+            </div>
+            
+            <div class="join-section">
+                <div class="join-title">Join the ranks of our custo...</div>
+                
+                <div class="pricing-card">
+                    <div class="pricing-price">
+                        <span class="pricing-currency">$</span>
+                        <span class="pricing-amount">98</span>
+                    </div>
+                    <div class="pricing-period">/ Monthly</div>
+                    <div class="pricing-label">Monthly</div>
+                    <div class="pricing-desc">Payment Of $98 Each Month</div>
+                    <button class="btn-monthly">Start With A Monthly Plan</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        Built with <span>💙</span> by Claudie • QClay Slay Style Exact Copy
+    </footer>
+</body>
+</html>

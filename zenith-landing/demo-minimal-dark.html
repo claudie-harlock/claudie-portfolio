@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith - Minimal Dark Stats Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #0a0a0a;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Glow particles */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFade 4s ease-in-out infinite;
+        }
+        
+        @keyframes particleFade {
+            0%, 100% { opacity: 0; transform: translateY(0); }
+            50% { opacity: 0.6; transform: translateY(-20px); }
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 40px;
+        }
+        
+        .hero-title {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 400;
+            line-height: 1.5;
+            max-width: 700px;
+            margin-bottom: 80px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 60px;
+            max-width: 1000px;
+        }
+        
+        .stat-item {
+            position: relative;
+        }
+        
+        .stat-value {
+            font-size: clamp(48px, 8vw, 80px);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 16px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .stat-value .number {
+            background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.6) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-value .suffix {
+            font-size: 0.5em;
+            color: rgba(255, 255, 255, 0.4);
+            -webkit-text-fill-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        /* Glow effect behind numbers */
+        .stat-value::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .stat-item:hover .stat-value::before {
+            opacity: 1;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .stat-label::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: currentColor;
+            border-radius: 50%;
+        }
+        
+        /* Accent colors */
+        .stat-item.green .stat-label { color: #4ade80; }
+        .stat-item.green .stat-label::before { background: #4ade80; box-shadow: 0 0 20px #4ade80; }
+        
+        .stat-item.blue .stat-label { color: #60a5fa; }
+        .stat-item.blue .stat-label::before { background: #60a5fa; box-shadow: 0 0 20px #60a5fa; }
+        
+        .stat-item.purple .stat-label { color: #a78bfa; }
+        .stat-item.purple .stat-label::before { background: #a78bfa; box-shadow: 0 0 20px #a78bfa; }
+        
+        /* Animated counter */
+        .stat-value .number {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: countUp 1s ease forwards;
+        }
+        
+        .stat-item:nth-child(1) .number { animation-delay: 0.2s; }
+        .stat-item:nth-child(2) .number { animation-delay: 0.4s; }
+        .stat-item:nth-child(3) .number { animation-delay: 0.6s; }
+        
+        @keyframes countUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Divider line */
+        .divider {
+            position: absolute;
+            left: 60px;
+            right: 60px;
+            bottom: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        }
+        
+        /* Navigation dots */
+        .nav-dots {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-dot.active {
+            background: white;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+        
+        .nav-dot:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Demo label */
+        .demo-label {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .demo-label span {
+            color: #4ade80;
+        }
+        
+        /* Mouse glow */
+        .mouse-glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="mouse-glow" id="mouseGlow"></div>
+    
+    <section class="hero">
+        <div class="hero-label">Zenith • Creator Platform</div>
+        
+        <h1 class="hero-title">
+            We provide unique trading programs for Forex traders, based upon which we search for the best options to work together with. We provide you with Trading accounts that you can use to trade and earn commission without the risk of losing your own funds!
+        </h1>
+        
+        <div class="stats-grid">
+            <div class="stat-item green">
+                <div class="stat-value">
+                    <span class="number" data-value="400">0</span><span class="suffix">K+</span>
+                </div>
+                <div class="stat-label">Paid out to Creators</div>
+            </div>
+            <div class="stat-item blue">
+                <div class="stat-value">
+                    <span class="number" data-value="15">0</span><span class="suffix">K+</span>
+                </div>
+                <div class="stat-label">No. of Active Creators</div>
+            </div>
+            <div class="stat-item purple">
+                <div class="stat-value">
+                    <span class="number" data-value="16">0</span><span class="suffix">h</span>
+                </div>
+                <div class="stat-label">Avg payout processing time</div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="divider"></div>
+    
+    <div class="nav-dots">
+        <div class="nav-dot active"></div>
+        <div class="nav-dot"></div>
+        <div class="nav-dot"></div>
+    </div>
+    
+    <div class="demo-label">Minimal Dark <span>Stats</span> Demo</div>
+    
+    <script>
+        // Mouse glow effect
+        const mouseGlow = document.getElementById('mouseGlow');
+        document.addEventListener('mousemove', (e) => {
+            mouseGlow.style.left = e.clientX + 'px';
+            mouseGlow.style.top = e.clientY + 'px';
+        });
+        
+        // Create particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 4 + 's';
+            particle.style.animationDuration = (3 + Math.random() * 2) + 's';
+            particlesContainer.appendChild(particle);
+        }
+        
+        // Animated counter
+        const counters = document.querySelectorAll('.number');
+        counters.forEach(counter => {
+            const target = parseInt(counter.dataset.value);
+            const duration = 2000;
+            const startTime = performance.now();
+            
+            setTimeout(() => {
+                const animate = (currentTime) => {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const easeOut = 1 - Math.pow(1 - progress, 3);
+                    const current = Math.floor(target * easeOut);
+                    counter.textContent = current;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+                requestAnimationFrame(animate);
+            }, parseFloat(getComputedStyle(counter).animationDelay) * 1000);
+        });
+    </script>
+</body>
+</html>

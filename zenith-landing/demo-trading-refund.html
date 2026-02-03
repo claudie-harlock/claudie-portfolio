@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith — Get a Refund</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg: #0a0a0a;
+            --green: #22c55e;
+            --green-dark: #16a34a;
+            --card-bg: #141414;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Main Container */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Top Text Row */
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .top-text {
+            flex: 1;
+            max-width: 400px;
+        }
+        
+        .top-text p {
+            font-size: 13px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Cards Row */
+        .cards-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Feature Card */
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+        
+        .feature-card:hover {
+            border-color: rgba(34, 197, 94, 0.2);
+            transform: translateY(-4px);
+        }
+        
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        
+        .card-icon svg {
+            width: 36px;
+            height: 36px;
+            color: white;
+        }
+        
+        /* Glow behind icon */
+        .card-icon::after {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.3) 0%, transparent 70%);
+            z-index: -1;
+        }
+        
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .card-desc {
+            font-size: 14px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Phone Card */
+        .phone-card {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+        
+        .phone-card .card-content {
+            flex: 1;
+        }
+        
+        .phone-mockup {
+            width: 160px;
+            height: 320px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%);
+            border-radius: 32px;
+            border: 3px solid #333;
+            padding: 12px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        /* Phone notch */
+        .phone-mockup::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 20px;
+            background: #0a0a0a;
+            border-radius: 10px;
+        }
+        
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #111 0%, #0a0a0a 100%);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 40px 16px 16px;
+        }
+        
+        .phone-logo {
+            width: 40px;
+            height: 40px;
+            background: var(--green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        
+        .phone-title {
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .phone-subtitle {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
+            text-align: center;
+        }
+        
+        .phone-chart {
+            width: 100%;
+            height: 60px;
+            margin-top: auto;
+            position: relative;
+        }
+        
+        .phone-chart svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .chart-line {
+            fill: none;
+            stroke: var(--green);
+            stroke-width: 2;
+        }
+        
+        .chart-area {
+            fill: url(#phoneChartGradient);
+        }
+        
+        /* Background Typography */
+        .bg-typography {
+            position: absolute;
+            bottom: 10%;
+            left: 0;
+            right: 0;
+            z-index: 1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .bg-text {
+            font-size: clamp(80px, 12vw, 160px);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            white-space: nowrap;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.06);
+            line-height: 1;
+        }
+        
+        .bg-text span {
+            color: rgba(255, 255, 255, 0.03);
+            -webkit-text-stroke: none;
+        }
+        
+        /* Animated gradient on "refund" */
+        .bg-text .highlight {
+            background: linear-gradient(90deg, 
+                rgba(34, 197, 94, 0.2) 0%, 
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(34, 197, 94, 0.2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-stroke: none;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        /* Floating elements */
+        .floating-badge {
+            position: absolute;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 100px;
+            padding: 8px 16px;
+            font-size: 12px;
+            color: var(--green);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .floating-badge.b1 {
+            top: 30%;
+            right: 5%;
+            animation-delay: 0s;
+        }
+        
+        .floating-badge.b2 {
+            bottom: 35%;
+            left: 5%;
+            animation-delay: 1s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Footer */
+        .footer-badge {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .footer-badge span {
+            color: var(--green);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .top-row {
+                flex-direction: column;
+            }
+            
+            .cards-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .phone-card {
+                flex-direction: column;
+            }
+            
+            .bg-text {
+                font-size: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="main">
+        <!-- Top Text Row -->
+        <div class="top-row">
+            <div class="top-text">
+                <p>Funding goals without the pressure of strict time constraints. Trade at your own pace and implement your strategies with flexibility</p>
+            </div>
+            <div class="top-text">
+                <p>Your trading account, raise your provision level, or give you the opportunity to repeat a trading phase for free!</p>
+            </div>
+        </div>
+        
+        <!-- Cards Row -->
+        <div class="cards-row">
+            <!-- Unique Programs Card -->
+            <div class="feature-card">
+                <div class="card-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Unique programs</h3>
+                <p class="card-desc">You are guaranteed satisfaction with us — we want our traders to succeed and be one step ahead — that's why we offer the widest range of trading programs and benefits available.</p>
+            </div>
+            
+            <!-- Modern Platform Card -->
+            <div class="feature-card phone-card">
+                <div class="card-content">
+                    <h3 class="card-title">A modern</h3>
+                    <p class="card-desc">We offer a new, modern platform ALL in one, based on charts from trading view and connected directly to the liquidity providers. The way your trading will always be simple and clear.</p>
+                </div>
+                <div class="phone-mockup">
+                    <div class="phone-screen">
+                        <div class="phone-logo">△</div>
+                        <div class="phone-title">Zenith</div>
+                        <div class="phone-subtitle">Trading Platform</div>
+                        <div class="phone-chart">
+                            <svg viewBox="0 0 120 50">
+                                <defs>
+                                    <linearGradient id="phoneChartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#22c55e;stop-opacity:0.3" />
+                                        <stop offset="100%" style="stop-color:#22c55e;stop-opacity:0" />
+                                    </linearGradient>
+                                </defs>
+                                <path class="chart-area" d="M0,40 Q20,35 40,30 T60,25 T80,15 T100,20 T120,10 L120,50 L0,50 Z" />
+                                <path class="chart-line" d="M0,40 Q20,35 40,30 T60,25 T80,15 T100,20 T120,10" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Background Typography -->
+        <div class="bg-typography">
+            <div class="bg-text">Get a <span class="highlight">refund</span> or</div>
+        </div>
+        
+        <!-- Floating badges -->
+        <div class="floating-badge b1">
+            <span>✓</span> Instant Payouts
+        </div>
+        <div class="floating-badge b2">
+            <span>✓</span> No Hidden Fees
+        </div>
+    </section>
+    
+    <div class="footer-badge"><span>QClay</span> Style • Trading Platform</div>
+    
+    <script>
+        // Parallax effect on background text
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 2;
+            const bgText = document.querySelector('.bg-text');
+            bgText.style.transform = `translateX(${x * 30}px)`;
+        });
+        
+        // Card hover glow effect
+        const cards = document.querySelectorAll('.feature-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', x + 'px');
+                card.style.setProperty('--mouse-y', y + 'px');
+            });
+        });
+    </script>
+</body>
+</html>
