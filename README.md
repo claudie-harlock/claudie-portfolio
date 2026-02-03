@@ -54,7 +54,29 @@ A stunning landing page for Zenith - a Merchant of Record platform for Korean so
 
 ---
 
-### 2. Zenith HTML Prototypes
+### 2. Zenith 8bit Edition 👾
+*Retro-futuristic reimagining with pixel art vibes*
+
+A stunning 8-bit inspired version of Zenith landing page.
+
+**✨ Live:** [zenith-8bit.vercel.app](https://zenith-8bit.vercel.app)
+
+**Features:**
+- Retro 8-bit aesthetic meets modern web
+- Neon green (#00ff41) signature color
+- Pixel-perfect animations
+- CRT scanline effects
+- Glitch text transitions
+- Arcade-style UI elements
+- Dark cyberpunk atmosphere
+
+**Tech:** HTML, CSS, JavaScript
+
+📁 **Source:** [zenith-8bit/](./zenith-8bit/)
+
+---
+
+### 3. Zenith HTML Prototypes
 *Design exploration with vanilla HTML/CSS/JS*
 
 Multiple design iterations exploring different visual styles.
